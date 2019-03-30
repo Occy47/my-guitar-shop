@@ -1,0 +1,9 @@
+export const LANDING = "/";
+export const HOME = "/home";
+export const LISTING = "/listing";
+export const FAQ = "/faq";
+export const CART = "/cart";
+export const LOGIN = "/login";
+export const REGISTER = "/register";
+export const FORGOT_PASSWORD = "/forgot-pw";
+export const ADMIN = "/admin";
