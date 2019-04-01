@@ -1,5 +1,6 @@
 import { ITEMS_ADD } from "../constants";
-import { combineReducers } from "redux";
+import * as actions from "../actions/item";
+import { ActionType } from "typesafe-actions";
 
 export type Item = {
   name: string;
@@ -7,33 +8,27 @@ export type Item = {
   description: string;
 };
 
-export type ItemState = {
+export interface ItemsState {
   items: Item[];
-  error: string;
+}
+
+const INITIAL_STATE: ItemsState = {
+  items: [
+    { name: "fender", price: 3300, description: "cool guitar" },
+    { name: "gibson", price: 4200, description: "the coolest guitar" }
+  ]
 };
 
-const INITIAL_STATE: ItemState = {
-  items: [],
-  error: ""
-};
+export type ItemsActions = ActionType<typeof actions>;
 
-// function applyAddItem(state: ItemState, action: ItemActionTypes) {
-//   const newItem = action.payload;
-//   const error = "";
-//   return { ...state, newItem, error };
-// }
+function itemsReducer(state = INITIAL_STATE, action: ItemsActions): ItemsState {
+  switch (action.type) {
+    case ITEMS_ADD:
+      let newItem = [action.payload];
+      return { ...state, ...newItem };
+    default:
+      return state;
+  }
+}
 
-// function itemReducer(
-//   state = INITIAL_STATE,
-//   action: ItemActionTypes
-// ): ItemState {
-//   switch (action.type) {
-//     case ITEMS_ADD: {
-//       return applyAddItem(state, action);
-//     }
-//     default:
-//       return state;
-//   }
-// }
-
-export default itemReducer;
+export default itemsReducer;

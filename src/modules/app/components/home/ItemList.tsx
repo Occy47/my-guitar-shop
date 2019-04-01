@@ -1,17 +1,18 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { ItemState, Item } from "../../../../redux/reducers/item";
+import { ItemsState, Item } from "../../../../redux/reducers/item";
 
-const ItemList: React.FC<ItemState> = state => {
+const ItemList = (props: ItemsState) => {
+  console.log(props.items);
   return (
     <div>
-      {state.items.map(item => (
+      {props.items.map((item: Item) => {
         <ItemComp
           name={item.name}
           price={item.price}
           description={item.description}
-        />
-      ))}
+        />;
+      })}
     </div>
   );
 };
@@ -24,9 +25,8 @@ const ItemComp = (props: Item) => (
   </div>
 );
 
-const mapStateToProps = (state: ItemState) => ({
-  items: state.items,
-  error: state.error
+const mapStateToProps = (state: ItemsState) => ({
+  items: state.items
 });
 
 export default connect(mapStateToProps)(ItemList);
