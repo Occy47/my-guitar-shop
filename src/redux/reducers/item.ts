@@ -21,11 +21,16 @@ const INITIAL_STATE: ItemsState = {
 
 export type ItemsActions = ActionType<typeof actions>;
 
+function applyAddItem(state: ItemsState, action: ItemsActions) {
+  const item = { ...action.payload };
+  const items = [...state.items, item];
+  return { ...state, items };
+}
+
 function itemsReducer(state = INITIAL_STATE, action: ItemsActions): ItemsState {
   switch (action.type) {
     case ITEMS_ADD:
-      let newItem = [action.payload];
-      return { ...state, ...newItem };
+      return applyAddItem(state, action);
     default:
       return state;
   }

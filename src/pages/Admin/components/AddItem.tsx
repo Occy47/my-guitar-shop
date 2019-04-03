@@ -1,7 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { doAddItem } from "../../../../redux/actions/item";
-import { Item } from "../../../../redux/reducers/item";
+import { Dispatch } from "redux";
+import { doAddItem } from "../../../redux/actions/item";
+import { Item, ItemsActions } from "../../../redux/reducers/item";
 
 export interface IState {
   name: string;
@@ -9,10 +10,12 @@ export interface IState {
   description: string;
 }
 
-export interface IProps {}
+export interface IProps {
+  onAddItem: Function;
+}
 
 class AddItem extends React.Component<IProps, IState> {
-  constructor(props: {}) {
+  constructor(props: any) {
     super(props);
     this.state = {
       name: "",
@@ -22,41 +25,40 @@ class AddItem extends React.Component<IProps, IState> {
     this.onNameChange = this.onNameChange.bind(this);
     this.onPriceChange = this.onPriceChange.bind(this);
     this.onDescrChange = this.onDescrChange.bind(this);
-    this.onAddItem = this.onAddItem.bind(this);
   }
 
-  onNameChange(event: any) {
-    this.setState({ name: event.target.value });
+  onNameChange(event: React.FormEvent<HTMLInputElement>) {
+    this.setState({ name: event.currentTarget.value });
     event.preventDefault();
   }
+
+  // Set proper event type
   onPriceChange(event: any) {
     this.setState({ price: event.target.value });
     event.preventDefault();
   }
-  onDescrChange(event: any) {
-    this.setState({ description: event.target.value });
+  onDescrChange(event: React.FormEvent<HTMLInputElement>) {
+    this.setState({ description: event.currentTarget.value });
     event.preventDefault();
   }
 
-  onAddItem() {
+  render() {
     const { name, price, description } = this.state;
     const newItem = { name, price, description };
-    return { newItem };
-  }
-
-  render() {
+    const { onAddItem } = this.props;
+    console.log(newItem);
     return (
       <div>
         <input type="text" name="name" onChange={this.onNameChange} />
-        <input type="text" name="price" onChange={this.onPriceChange} />
+        <input type="number" name="price" onChange={this.onPriceChange} />
         <input type="text" name="description" onChange={this.onDescrChange} />
-        <button onClick={this.onAddItem}>Add Item</button>
+        <button onClick={() => onAddItem(newItem)}>Add Item</button>
       </div>
     );
   }
 }
 
-const mapDispatchtoProps = (dispatch: any) => ({
+const mapDispatchtoProps = (dispatch: Dispatch<ItemsActions>) => ({
   onAddItem: (item: Item) => dispatch(doAddItem(item))
 });
 

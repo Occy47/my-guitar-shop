@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import * as ROUTES from "../../../navigation/consts/routes";
+import * as ROUTES from "../../constants/routes";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class LandingPage extends React.Component {
