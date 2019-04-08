@@ -1,5 +1,8 @@
-import { ITEMS_ADD } from "../constants";
+import { ITEMS_ADD, ITEMS_DELETE } from "../constants";
 import { action } from "typesafe-actions";
 import { Item } from "../reducers/item";
+import { ItemsActions } from "../types";
 
-export const doAddItem = (item: Item) => action(ITEMS_ADD, item);
+export const doAddItem = (item: Item): ItemsActions => action(ITEMS_ADD, item);
+export const doDeleteItem = (item: Item): ItemsActions =>
+  action(ITEMS_DELETE, item);

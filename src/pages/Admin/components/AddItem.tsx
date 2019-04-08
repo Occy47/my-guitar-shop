@@ -2,9 +2,12 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { doAddItem } from "../../../redux/actions/item";
-import { Item, ItemsActions } from "../../../redux/reducers/item";
+import { Item } from "../../../redux/reducers/item";
+import { ItemsActions } from "../../../redux/types";
+import uuid from "uuid";
 
 export interface IState {
+  id: string;
   name: string;
   price: number;
   description: string;
@@ -18,6 +21,7 @@ class AddItem extends React.Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
+      id: "",
       name: "",
       price: 0,
       description: ""
@@ -25,6 +29,7 @@ class AddItem extends React.Component<IProps, IState> {
     this.onNameChange = this.onNameChange.bind(this);
     this.onPriceChange = this.onPriceChange.bind(this);
     this.onDescrChange = this.onDescrChange.bind(this);
+    this.onCreateItem = this.onCreateItem.bind(this);
   }
 
   onNameChange(event: React.FormEvent<HTMLInputElement>) {
@@ -32,7 +37,7 @@ class AddItem extends React.Component<IProps, IState> {
     event.preventDefault();
   }
 
-  // Set proper event type
+  // Reminder: Set proper event type
   onPriceChange(event: any) {
     this.setState({ price: event.target.value });
     event.preventDefault();
@@ -42,17 +47,42 @@ class AddItem extends React.Component<IProps, IState> {
     event.preventDefault();
   }
 
-  render() {
+  onCreateItem(event: any) {
     const { name, price, description } = this.state;
-    const newItem = { name, price, description };
-    const { onAddItem } = this.props;
-    console.log(newItem);
+    let newItem = { id: uuid(), name, price, description };
+
+    this.props.onAddItem(newItem);
+    this.setState({ name: "", price: 0, description: "" });
+    event.preventDefault();
+  }
+
+  render() {
     return (
       <div>
-        <input type="text" name="name" onChange={this.onNameChange} />
-        <input type="number" name="price" onChange={this.onPriceChange} />
-        <input type="text" name="description" onChange={this.onDescrChange} />
-        <button onClick={() => onAddItem(newItem)}>Add Item</button>
+        <form onSubmit={this.onCreateItem}>
+          <input
+            type="text"
+            name="name"
+            value={this.state.name}
+            placeholder="Enter guitar brand"
+            onChange={this.onNameChange}
+          />
+          <input
+            type="number"
+            name="price"
+            value={this.state.price}
+            placeholder="Enter price"
+            onChange={this.onPriceChange}
+          />
+          <input
+            type="text"
+            name="description"
+            value={this.state.description}
+            placeholder="Description"
+            onChange={this.onDescrChange}
+          />
+          <button type="submit">Add Item</button>
+        </form>
       </div>
     );
   }
