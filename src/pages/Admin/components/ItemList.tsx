@@ -1,9 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { doDeleteItem } from "../../../redux/actions/item";
+import { doDeleteItem, doUpdateItem } from "../../../redux/actions/item";
 import { ItemsState, Item } from "../../../redux/reducers/item";
 import { RootState, ItemsActions } from "../../../redux/types";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const ItemList: React.FC<ItemsState> = props => {
   const { items } = props;
@@ -27,12 +28,24 @@ type ItemProps = {
   onDeleteItem: Function;
 };
 
+// type ItemProps not correct type??
+
 class ItemComponent extends React.Component<ItemProps | any, any> {
   constructor(props: any) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      isEditing: false,
+      id: "",
+      name: "",
+      price: 0,
+      description: ""
+    };
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    this.handleStartEditClick = this.handleStartEditClick.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.handleFinishEditClick = this.handleFinishEditClick.bind(this);
   }
-  handleClick(event: any) {
+  handleDeleteClick(event: any) {
     const { id, name, description, price } = this.props;
     const item = { id, name, description, price };
 
@@ -40,18 +53,88 @@ class ItemComponent extends React.Component<ItemProps | any, any> {
     event.preventDefault();
   }
 
+  handleStartEditClick(event: any) {
+    const { id, name, description, price } = this.props;
+    this.setState({
+      isEditing: !this.state.isEditing,
+      id: id,
+      name: name,
+      price: price,
+      description: description
+    });
+    event.preventDefault();
+  }
+
+  handleFinishEditClick(event: any) {
+    const { id, name, description, price } = this.state;
+    let item = { id, name, description, price };
+    this.props.onUpdateItem(item);
+
+    this.setState({ isEditing: !this.state.isEditing });
+    event.preventDefault();
+  }
+
+  onChange(event: any) {
+    this.setState({ [event.target.name]: event.target.value });
+    event.preventDefault();
+  }
+
   render() {
     return (
       <div>
-        <span>Brand: {this.props.name} </span>
-        <span>Price: {this.props.price}kn </span>
-        <span>Description: {this.props.description} </span>
-        <span>
-          <button>Edit</button>
-        </span>
-        <span>
-          <button onClick={this.handleClick}>Delete</button>
-        </span>
+        {this.state.isEditing ? (
+          <form className="list-group-item list-group-item-primary">
+            <input
+              type="text"
+              name="name"
+              value={this.state.name}
+              onChange={this.onChange}
+            />
+            <input
+              type="number"
+              name="price"
+              value={this.state.price}
+              onChange={this.onChange}
+            />
+            <input
+              type="text"
+              name="description"
+              value={this.state.description}
+              onChange={this.onChange}
+            />
+            <button
+              type="button"
+              className="btn btn-primary ml-1"
+              onClick={this.handleFinishEditClick}
+            >
+              Save
+            </button>
+          </form>
+        ) : (
+          <div className="list-group-item list-group-item-primary">
+            <span>Brand: {this.props.name} </span>
+            <span>Price: {this.props.price}kn </span>
+            <span>Description: {this.props.description} </span>
+            <span>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={this.handleStartEditClick}
+              >
+                Edit
+              </button>
+            </span>
+            <span>
+              <button
+                type="button"
+                className="btn btn-primary ml-1"
+                onClick={this.handleDeleteClick}
+              >
+                Delete
+              </button>
+            </span>
+          </div>
+        )}
       </div>
     );
   }
@@ -65,7 +148,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchtoProps = (dispatch: Dispatch<ItemsActions>) => ({
-  onDeleteItem: (item: Item) => dispatch(doDeleteItem(item))
+  onDeleteItem: (item: Item) => dispatch(doDeleteItem(item)),
+  onUpdateItem: (item: Item) => dispatch(doUpdateItem(item))
 });
 
 const ConnectedItemsList = connect(mapStateToProps)(ItemList);

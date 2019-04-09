@@ -1,4 +1,4 @@
-import { ITEMS_ADD, ITEMS_DELETE } from "./constants";
+import { ITEMS_ADD, ITEMS_DELETE, ITEMS_UPDATE } from "./constants";
 import { Item } from "../redux/reducers/item";
 
 import { StateType } from "typesafe-actions";
@@ -14,5 +14,12 @@ interface DeleteItemAction {
   payload: Item;
 }
 
+interface UpdateItemAction {
+  type: typeof ITEMS_UPDATE;
+  payload: Item;
+}
+
+//if payload is not Item => error ??
+
 export type RootState = StateType<typeof rootReducer>;
-export type ItemsActions = AddItemAction | DeleteItemAction;
+export type ItemsActions = AddItemAction | DeleteItemAction | UpdateItemAction;

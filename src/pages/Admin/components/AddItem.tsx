@@ -58,13 +58,14 @@ class AddItem extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div>
+      <div className="list-group-item list-group-item-success">
         <form onSubmit={this.onCreateItem}>
           <input
             type="text"
             name="name"
             value={this.state.name}
             placeholder="Enter guitar brand"
+            required
             onChange={this.onNameChange}
           />
           <input
@@ -72,6 +73,7 @@ class AddItem extends React.Component<IProps, IState> {
             name="price"
             value={this.state.price}
             placeholder="Enter price"
+            required
             onChange={this.onPriceChange}
           />
           <input
@@ -79,9 +81,12 @@ class AddItem extends React.Component<IProps, IState> {
             name="description"
             value={this.state.description}
             placeholder="Description"
+            required
             onChange={this.onDescrChange}
           />
-          <button type="submit">Add Item</button>
+          <button type="submit" className="btn btn-secondary ml-3">
+            Add Item
+          </button>
         </form>
       </div>
     );
