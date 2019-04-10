@@ -35,6 +35,20 @@ const INITIAL_STATE: ItemsState = {
       name: "gibson",
       price: 3800,
       description: "very nice guitar"
+    },
+    {
+      id: "3",
+
+      name: "ltd",
+      price: 2800,
+      description: "good, players guitar"
+    },
+    {
+      id: "4",
+
+      name: "ltd",
+      price: 1900,
+      description: "begginers guitar"
     }
   ]
 };

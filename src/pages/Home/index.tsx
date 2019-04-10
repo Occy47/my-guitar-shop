@@ -1,20 +1,10 @@
 import React from "react";
-import ItemView from "./components/ItemView";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ConnectedItemViewList from "./components/ItemViewList";
 
 const HomePage = () => (
   <div className="container">
-    <div className="row">
-      <div className="col-sm">
-        <ItemView />
-      </div>
-      <div className="col-sm">
-        <ItemView />
-      </div>
-      <div className="col-sm">
-        <ItemView />
-      </div>
-    </div>
+    <ConnectedItemViewList />
   </div>
 );
 

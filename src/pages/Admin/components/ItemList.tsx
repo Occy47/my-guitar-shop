@@ -24,13 +24,15 @@ const ItemList: React.FC<ItemsState> = props => {
 };
 
 type ItemProps = {
-  item: Item;
+  id: string;
+  name: string;
+  price: number;
+  description: string;
   onDeleteItem: Function;
+  onUpdateItem: Function;
 };
 
-// type ItemProps not correct type??
-
-class ItemComponent extends React.Component<ItemProps | any, any> {
+class ItemComponent extends React.Component<ItemProps, any> {
   constructor(props: any) {
     super(props);
     this.state = {
