@@ -22,11 +22,6 @@ const Navigation = () => (
           </Link>
         </li>
         <li className="nav-item active">
-          <Link className="nav-link" to={ROUTES.FORGOT_PASSWORD}>
-            Lost Password
-          </Link>
-        </li>
-        <li className="nav-item active">
           <Link className="nav-link" to={ROUTES.FAQ}>
             FAQ
           </Link>
