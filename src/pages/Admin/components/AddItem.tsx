@@ -8,7 +8,9 @@ import uuid from "uuid";
 
 export interface IState {
   id: string;
-  name: string;
+  category: string;
+  make: string;
+  model: string;
   price: number;
   description: string;
 }
@@ -17,42 +19,41 @@ export interface IProps {
   onAddItem: Function;
 }
 
-class AddItem extends React.Component<IProps, IState> {
+// if state type is IState => onChange function type error
+
+class AddItem extends React.Component<IProps, any> {
   constructor(props: any) {
     super(props);
     this.state = {
       id: "",
-      name: "",
+      category: "",
+      make: "",
+      model: "",
       price: 0,
       description: ""
     };
-    this.onNameChange = this.onNameChange.bind(this);
-    this.onPriceChange = this.onPriceChange.bind(this);
-    this.onDescrChange = this.onDescrChange.bind(this);
+
+    this.onChange = this.onChange.bind(this);
     this.onCreateItem = this.onCreateItem.bind(this);
   }
 
-  onNameChange(event: React.FormEvent<HTMLInputElement>) {
-    this.setState({ name: event.currentTarget.value });
-    event.preventDefault();
-  }
-
-  // Reminder: Set proper event type
-  onPriceChange(event: any) {
-    this.setState({ price: event.target.value });
-    event.preventDefault();
-  }
-  onDescrChange(event: React.FormEvent<HTMLInputElement>) {
-    this.setState({ description: event.currentTarget.value });
+  onChange(event: any) {
+    this.setState({ [event.target.name]: event.target.value });
     event.preventDefault();
   }
 
   onCreateItem(event: any) {
-    const { name, price, description } = this.state;
-    let newItem = { id: uuid(), name, price, description };
+    const { category, make, model, price, description } = this.state;
+    let newItem = { id: uuid(), category, make, model, price, description };
 
     this.props.onAddItem(newItem);
-    this.setState({ name: "", price: 0, description: "" });
+    this.setState({
+      category: "",
+      make: "",
+      model: "",
+      price: 0,
+      description: ""
+    });
     event.preventDefault();
   }
 
@@ -60,33 +61,59 @@ class AddItem extends React.Component<IProps, IState> {
     return (
       <div className="list-group-item list-group-item-success">
         <form onSubmit={this.onCreateItem}>
-          <input
-            type="text"
-            name="name"
-            value={this.state.name}
-            placeholder="Enter guitar brand"
-            required
-            onChange={this.onNameChange}
-          />
-          <input
-            type="number"
-            name="price"
-            value={this.state.price}
-            placeholder="Enter price"
-            required
-            onChange={this.onPriceChange}
-          />
-          <input
-            type="text"
-            name="description"
-            value={this.state.description}
-            placeholder="Description"
-            required
-            onChange={this.onDescrChange}
-          />
-          <button type="submit" className="btn btn-secondary ml-3">
-            Add Item
-          </button>
+          <div className="form-row">
+            <select
+              className="form-control col-2"
+              name="category"
+              value={this.state.category}
+              onChange={this.onChange}
+              required
+            >
+              <option value="">none</option>
+              <option value="guitars">guitars</option>
+              <option value="amps">amps</option>
+              <option value="other">other</option>
+            </select>
+            <input
+              className="form-control col-2"
+              type="text"
+              name="make"
+              value={this.state.make}
+              placeholder="Enter make"
+              required
+              onChange={this.onChange}
+            />
+            <input
+              className="form-control col-2"
+              type="text"
+              name="model"
+              value={this.state.model}
+              placeholder="Enter model"
+              required
+              onChange={this.onChange}
+            />
+            <input
+              className="form-control col-2"
+              type="number"
+              name="price"
+              value={this.state.price}
+              placeholder="Enter price"
+              required
+              onChange={this.onChange}
+            />
+            <input
+              className="form-control col-2"
+              type="text"
+              name="description"
+              value={this.state.description}
+              placeholder="Description"
+              required
+              onChange={this.onChange}
+            />
+            <button type="submit" className="btn btn-secondary ml-3">
+              Add Item
+            </button>
+          </div>
         </form>
       </div>
     );

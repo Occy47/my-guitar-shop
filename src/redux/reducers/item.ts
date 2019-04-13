@@ -3,8 +3,9 @@ import { ItemsActions } from "../types";
 
 export type Item = {
   id: string;
-
-  name: string;
+  category: string;
+  make: string;
+  model: string;
   price: number;
   description: string;
 };
@@ -17,38 +18,67 @@ const INITIAL_STATE: ItemsState = {
   items: [
     {
       id: "0",
-
-      name: "fender",
+      category: "guitars",
+      make: "fender",
+      model: "stratocaster",
       price: 3300,
       description: "cool guitar"
     },
     {
       id: "1",
-
-      name: "gibson",
+      category: "guitars",
+      make: "gibson",
+      model: "les paul",
       price: 4200,
       description: "the coolest guitar"
     },
     {
       id: "2",
-
-      name: "gibson",
+      category: "guitars",
+      make: "gibson",
+      model: "sg",
       price: 3800,
       description: "very nice guitar"
     },
     {
       id: "3",
-
-      name: "ltd",
+      category: "guitars",
+      make: "ltd",
+      model: "les paul",
       price: 2800,
       description: "good, players guitar"
     },
     {
       id: "4",
-
-      name: "ltd",
+      category: "guitars",
+      make: "ltd",
+      model: "stratocaster",
       price: 1900,
       description: "begginers guitar"
+    },
+    {
+      id: "5",
+      category: "amps",
+      make: "fender",
+      model: "amp 20w",
+      price: 900,
+      description: "good amp"
+    },
+    {
+      id: "6",
+      category: "amps",
+      make: "marshall",
+      model: "amp 80w",
+      price: 2900,
+      description: "very good amp"
+    },
+    {
+      id: "7",
+      category: "other",
+      make: "fender",
+      model: "2m cord",
+      price: 35,
+      description: "2m basic guitar cord"
     }
   ]
 };

@@ -4,6 +4,7 @@ import { RootState } from "../../../redux/types";
 import { connect } from "react-redux";
 import { ItemsState } from "../../../redux/reducers/item";
 import ItemViewCard from "./ItemViewCard";
+import getSortedItems from "../../../redux/selectors";
 
 class ItemViewList extends React.Component<ItemsState, any> {
   constructor(props: any) {
@@ -17,7 +18,8 @@ class ItemViewList extends React.Component<ItemsState, any> {
         {items.map(item => (
           <ItemViewCard
             key={item.id}
-            name={item.name}
+            make={item.make}
+            model={item.model}
             price={item.price}
             description={item.description}
           />
@@ -28,7 +30,7 @@ class ItemViewList extends React.Component<ItemsState, any> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  items: state.itemsState.items
+  items: getSortedItems(state)
 });
 
 const ConnectedItemViewList = connect(mapStateToProps)(ItemViewList);

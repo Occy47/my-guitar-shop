@@ -1,4 +1,4 @@
-import { ITEMS_ADD, ITEMS_DELETE, ITEMS_UPDATE } from "./constants";
+import { ITEMS_ADD, ITEMS_DELETE, ITEMS_UPDATE, SORTER_SET } from "./constants";
 import { Item } from "../redux/reducers/item";
 
 import { StateType } from "typesafe-actions";
@@ -19,7 +19,13 @@ interface UpdateItemAction {
   payload: Item;
 }
 
+interface SortItemsAction {
+  type: typeof SORTER_SET;
+  payload: string;
+}
+
 //if payload is not Item => error ??
 
 export type RootState = StateType<typeof rootReducer>;
 export type ItemsActions = AddItemAction | DeleteItemAction | UpdateItemAction;
+export type SorterActions = SortItemsAction;

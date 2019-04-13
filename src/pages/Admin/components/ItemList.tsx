@@ -5,6 +5,7 @@ import { doDeleteItem, doUpdateItem } from "../../../redux/actions/item";
 import { ItemsState, Item } from "../../../redux/reducers/item";
 import { RootState, ItemsActions } from "../../../redux/types";
 import "bootstrap/dist/css/bootstrap.min.css";
+import getSortedItems from "../../../redux/selectors";
 
 const ItemList: React.FC<ItemsState> = props => {
   const { items } = props;
@@ -14,7 +15,9 @@ const ItemList: React.FC<ItemsState> = props => {
         <ConnectedItemComponent
           key={item.id}
           id={item.id}
-          name={item.name}
+          category={item.category}
+          make={item.make}
+          model={item.model}
           price={item.price}
           description={item.description}
         />
@@ -25,7 +28,9 @@ const ItemList: React.FC<ItemsState> = props => {
 
 type ItemProps = {
   id: string;
-  name: string;
+  category: string;
+  make: string;
+  model: string;
   price: number;
   description: string;
   onDeleteItem: Function;
@@ -38,7 +43,9 @@ class ItemComponent extends React.Component<ItemProps, any> {
     this.state = {
       isEditing: false,
       id: "",
-      name: "",
+      category: "",
+      make: "",
+      model: "",
       price: 0,
       description: ""
     };
@@ -48,19 +55,21 @@ class ItemComponent extends React.Component<ItemProps, any> {
     this.handleFinishEditClick = this.handleFinishEditClick.bind(this);
   }
   handleDeleteClick(event: any) {
-    const { id, name, description, price } = this.props;
-    const item = { id, name, description, price };
+    const { id, category, make, model, description, price } = this.props;
+    const item = { id, category, make, model, description, price };
 
     this.props.onDeleteItem(item);
     event.preventDefault();
   }
 
   handleStartEditClick(event: any) {
-    const { id, name, description, price } = this.props;
+    const { id, category, make, model, description, price } = this.props;
     this.setState({
       isEditing: !this.state.isEditing,
       id: id,
-      name: name,
+      category: category,
+      make: make,
+      model: model,
       price: price,
       description: description
     });
@@ -68,8 +77,8 @@ class ItemComponent extends React.Component<ItemProps, any> {
   }
 
   handleFinishEditClick(event: any) {
-    const { id, name, description, price } = this.state;
-    let item = { id, name, description, price };
+    const { id, category, make, model, description, price } = this.state;
+    let item = { id, category, make, model, description, price };
     this.props.onUpdateItem(item);
 
     this.setState({ isEditing: !this.state.isEditing });
@@ -86,10 +95,26 @@ class ItemComponent extends React.Component<ItemProps, any> {
       <div>
         {this.state.isEditing ? (
           <form className="list-group-item list-group-item-primary">
+            <select
+              name="category"
+              value={this.state.category}
+              onChange={this.onChange}
+            >
+              <option value="">none</option>
+              <option value="guitars">guitars</option>
+              <option value="amps">amps</option>
+              <option value="other">other</option>
+            </select>
             <input
               type="text"
-              name="name"
-              value={this.state.name}
+              name="make"
+              value={this.state.make}
+              onChange={this.onChange}
+            />
+            <input
+              type="text"
+              name="model"
+              value={this.state.model}
               onChange={this.onChange}
             />
             <input
@@ -106,7 +131,7 @@ class ItemComponent extends React.Component<ItemProps, any> {
             />
             <button
               type="button"
-              className="btn btn-primary ml-1"
+              className="btn btn-success ml-1"
               onClick={this.handleFinishEditClick}
             >
               Save
@@ -114,13 +139,28 @@ class ItemComponent extends React.Component<ItemProps, any> {
           </form>
         ) : (
           <div className="list-group-item list-group-item-primary">
-            <span>Brand: {this.props.name} </span>
-            <span>Price: {this.props.price}kn </span>
-            <span>Description: {this.props.description} </span>
+            <span>
+              <strong>Category: </strong> {this.props.category}{" "}
+            </span>
+            <span>
+              <strong>Brand: </strong> {this.props.make}{" "}
+            </span>
+            <span>
+              <strong>Model: </strong>
+              {this.props.model}{" "}
+            </span>
+            <span>
+              <strong>Price: </strong>
+              {this.props.price}kn{" "}
+            </span>
+            <span>
+              <strong>Description: </strong>
+              {this.props.description}{" "}
+            </span>
             <span>
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-info"
                 onClick={this.handleStartEditClick}
               >
                 Edit
@@ -129,7 +169,7 @@ class ItemComponent extends React.Component<ItemProps, any> {
             <span>
               <button
                 type="button"
-                className="btn btn-primary ml-1"
+                className="btn btn-danger ml-1"
                 onClick={this.handleDeleteClick}
               >
                 Delete
@@ -146,7 +186,7 @@ class ItemComponent extends React.Component<ItemProps, any> {
 // connected to Props ??!
 
 const mapStateToProps = (state: RootState) => ({
-  items: state.itemsState.items
+  items: getSortedItems(state)
 });
 
 const mapDispatchtoProps = (dispatch: Dispatch<ItemsActions>) => ({
