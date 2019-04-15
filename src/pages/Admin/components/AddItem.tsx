@@ -21,7 +21,7 @@ export interface IProps {
 
 // if state type is IState => onChange function type error
 
-class AddItem extends React.Component<IProps, any> {
+class AddItem extends React.Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -38,7 +38,7 @@ class AddItem extends React.Component<IProps, any> {
   }
 
   onChange(event: any) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value } as IState);
     event.preventDefault();
   }
 
