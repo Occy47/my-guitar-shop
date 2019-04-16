@@ -5,3 +5,4 @@ export const SHOW_ALL = "SHOW_ALL";
 export const SHOW_GUITARS = "SHOW_GUITARS";
 export const SHOW_AMPS = "SHOW_AMPS";
 export const SORTER_SET = "SORTER_SET";
+export const USER_SET = "USER_SET";

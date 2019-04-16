@@ -1,4 +1,10 @@
 import * as React from "react";
+import { connect } from "react-redux";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { UsersActions } from "../../../redux/types";
+import { doSetUser } from "../../../redux/actions/user";
+import { Dispatch } from "redux";
+import { User } from "../../../redux/reducers/user";
 
 export interface RegisterFormState {
   firstname: string;
@@ -21,17 +27,27 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
       passwordTwo: ""
     };
     this.onChange = this.onChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   onChange(event: any) {
     this.setState({
-      [event.target.name]: event.currentTarget.valeu
+      [event.target.name]: event.currentTarget.value
     } as RegisterFormState);
+    event.preventDefault();
+  }
+
+  handleSubmit(event: any) {
+    const { firstname, lastname, address, email } = this.state;
+    const user = { firstname, lastname, address, email };
+
+    this.props.onSetUser(user);
+    event.preventDefault();
   }
 
   render() {
     return (
-      <form>
+      <form onSubmit={this.handleSubmit}>
         <div className="form-group col-md-6">
           <label>First name:</label>
           <input
@@ -106,4 +122,13 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
   }
 }
 
-export default RegisterForm;
+const mapDispatchToProps = (dispatch: Dispatch<UsersActions>) => ({
+  onSetUser: (user: User) => dispatch(doSetUser(user))
+});
+
+const ConnectedRegisterForm = connect(
+  null,
+  mapDispatchToProps
+)(RegisterForm);
+
+export default ConnectedRegisterForm;

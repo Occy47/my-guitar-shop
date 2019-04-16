@@ -1,6 +1,6 @@
 import { SORTER_SET } from "../constants";
 
-function applySortFilter(state: any, action: any) {
+function applySortFilter(state: string, action: any) {
   return action.payload;
 }
 

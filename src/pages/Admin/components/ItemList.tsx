@@ -182,9 +182,6 @@ class ItemComponent extends React.Component<ItemProps, any> {
   }
 }
 
-// Parrent component connected to State => child component
-// connected to Props ??!
-
 const mapStateToProps = (state: RootState) => ({
   items: getSortedItems(state)
 });
