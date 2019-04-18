@@ -5,10 +5,13 @@ import App from "./pages";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import Firebase, { FirebaseContext } from "./firebase";
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <FirebaseContext.Provider value={new Firebase()}>
+      <App />
+    </FirebaseContext.Provider>
   </Provider>,
   document.getElementById("root")
 );
