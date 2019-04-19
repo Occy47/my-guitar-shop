@@ -37,6 +37,10 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  private static propKey(propertyName: string, value: string): object {
+    return { [propertyName]: value };
+  }
+
   onChange(event: any) {
     this.setState({
       [event.target.name]: event.currentTarget.value
@@ -54,7 +58,7 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
         this.props.history.push(ROUTES.HOME);
       })
       .catch((error: string) => {
-        this.setState({ error });
+        this.setState(RegisterForm.propKey("error", error));
       });
 
     this.props.onSetUser(user);
@@ -70,7 +74,7 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
       passwordOne,
       passwordTwo,
       error
-    } = this.state;
+    }: any = this.state;
 
     const isInvalid =
       passwordOne !== passwordTwo ||
@@ -159,7 +163,7 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
             Register
           </button>
         </div>
-        {error && <p>{error}</p>}
+        {error && <p>{error.message}</p>}
       </form>
     );
   }
