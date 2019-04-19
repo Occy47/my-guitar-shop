@@ -2,14 +2,15 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Navigation from "../components/Navigation";
-import LandingPage from "../pages/Landing";
-import HomePage from "../pages/Home";
-import RegisterPage from "../pages/Register";
-import LoginPage from "../pages/Login";
+import LandingPage from "./Landing";
+import HomePage from "./Home";
+import RegisterPage from "./Register";
+import LoginPage from "./Login";
 import AdminPage from "./Admin";
 import CartPage from "./Cart";
 import PasswordForgetPage from "./PasswordForget";
 import FaqPage from "./Faq";
+import { withAuthentication } from "../session";
 
 import * as ROUTES from "../constants/routes";
 
@@ -30,4 +31,4 @@ const App = () => (
   </Router>
 );
 
-export default App;
+export default withAuthentication(App);
