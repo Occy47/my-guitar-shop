@@ -1,4 +1,4 @@
-import { USER_SET } from "../constants";
+import { USERS_SET } from "../constants";
 import { UsersActions } from "../types";
 
 export interface User {
@@ -17,13 +17,13 @@ const INITIAL_STATE: IUserState = {
 };
 
 function applySetUser(state: IUserState, action: UsersActions) {
-  const users = [...state.users, action.payload];
+  const users = action.payload;
   return { ...state, users };
 }
 
 function userReducer(state = INITIAL_STATE, action: UsersActions) {
   switch (action.type) {
-    case USER_SET: {
+    case USERS_SET: {
       return applySetUser(state, action);
     }
     default:

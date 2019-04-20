@@ -2,6 +2,7 @@ import React from "react";
 import AddItem from "./components/AddItem";
 import ConnectedItemsList from "./components/ItemList";
 import ConnectedItemSorter from "../../components/ItemSorter";
+import UsersList from "./components/UsersList";
 
 const AdminPage = () => (
   <div>
@@ -10,6 +11,8 @@ const AdminPage = () => (
     <hr />
     <ConnectedItemSorter />
     <ConnectedItemsList />
+    <hr />
+    <UsersList />
   </div>
 );
 

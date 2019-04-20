@@ -1,4 +1,4 @@
-import { USER_SET } from "../constants";
+import { USERS_SET } from "../constants";
 import { action } from "typesafe-actions";
 
-export const doSetUser = (user: any) => action(USER_SET, user);
+export const doSetUsers = (users: any) => action(USERS_SET, users);

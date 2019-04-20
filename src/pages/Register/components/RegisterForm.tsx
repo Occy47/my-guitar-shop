@@ -1,9 +1,5 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch, compose } from "redux";
-import { UsersActions } from "../../../redux/types";
-import { doSetUser } from "../../../redux/actions/user";
-import { User } from "../../../redux/reducers/user";
+import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../../../firebase";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -49,19 +45,24 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
 
   handleSubmit(event: any) {
     const { firstname, lastname, address, email, passwordOne } = this.state;
-    const user = { firstname, lastname, address, email };
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then((authUser: any) => {
+        return this.props.firebase.user(authUser.user.uid).set({
+          firstname,
+          lastname,
+          address,
+          email
+        });
+      })
+      .then(() => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
       })
       .catch((error: string) => {
         this.setState(RegisterForm.propKey("error", error));
       });
-
-    this.props.onSetUser(user);
     event.preventDefault();
   }
 
@@ -169,15 +170,7 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<UsersActions>) => ({
-  onSetUser: (user: User) => dispatch(doSetUser(user))
-});
-
 export default compose(
   withFirebase,
-  withRouter,
-  connect(
-    null,
-    mapDispatchToProps
-  )
+  withRouter
 )(RegisterForm);

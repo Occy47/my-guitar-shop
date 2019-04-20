@@ -3,7 +3,7 @@ import {
   ITEMS_DELETE,
   ITEMS_UPDATE,
   SORTER_SET,
-  USER_SET
+  USERS_SET
 } from "./constants";
 import { Item } from "../redux/reducers/item";
 
@@ -31,12 +31,12 @@ interface SortItemsAction {
   payload: string;
 }
 
-interface SetUserAction {
-  type: typeof USER_SET;
-  payload: User;
+interface SetUsersAction {
+  type: typeof USERS_SET;
+  payload: User[];
 }
 
 export type RootState = StateType<typeof rootReducer>;
 export type ItemsActions = AddItemAction | DeleteItemAction | UpdateItemAction;
 export type SorterActions = SortItemsAction;
-export type UsersActions = SetUserAction;
+export type UsersActions = SetUsersAction;
