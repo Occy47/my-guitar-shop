@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import AddItem from "./components/AddItem";
 import ConnectedItemsList from "./components/ItemList";
 import ConnectedItemSorter from "../../components/ItemSorter";
