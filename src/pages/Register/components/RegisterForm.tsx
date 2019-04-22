@@ -173,4 +173,4 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
 export default compose(
   withFirebase,
   withRouter
-)(RegisterForm);
+)(RegisterForm) as any;

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RootState, UsersActions } from "../../../redux/types";
 import { User, IUserState } from "../../../redux/reducers/user";
-import { withFirebase } from "../../../firebase";
+import Firebase, { withFirebase } from "../../../firebase";
 import { compose, Dispatch } from "redux";
 import { doSetUsers } from "../../../redux/actions/user";
 import { connect } from "react-redux";
@@ -9,19 +9,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 interface IUserProps {
   users: User[];
-  firebase: object;
+  firebase: Firebase;
+  onSetUsers: Function;
 }
 
-class UsersList extends React.Component<any, IUserState> {
+class UsersList extends React.Component<IUserProps, IUserState> {
   constructor(props: any) {
     super(props);
-
-    this.state = {
-      users: []
-    };
   }
 
-  // IUserProps missing type for firebase and snapshot
   componentDidMount() {
     this.props.firebase.users().on("value", (snapshot: any) => {
       const usersObject = snapshot.val();
@@ -56,7 +52,7 @@ class UsersList extends React.Component<any, IUserState> {
   }
 }
 
-const UserComponent = (props: User) => (
+const UserComponent: React.FC<User> = props => (
   <div className="list-group-item list-group-item-primary">
     <span>
       <strong>First name: </strong>
@@ -91,4 +87,4 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   )
-)(UsersList);
+)(UsersList) as any;
