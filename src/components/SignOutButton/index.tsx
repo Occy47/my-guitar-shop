@@ -1,16 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { withFirebase } from "../../firebase";
-import { FirebaseContextProps } from "../../firebase/context";
+import { compose } from "recompose";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import * as ROUTES from "../../constants/routes";
-
-// const SignOutButton = ({ firebase }) => (
-//   <Link className="nav-link" to={ROUTES.LANDING} onClick={firebase.doSignOut}>
-//     Sign Out
-//   </Link>
-// );
 
 class SignOutButton extends React.Component<any, any> {
   constructor(props: any) {
@@ -20,6 +14,7 @@ class SignOutButton extends React.Component<any, any> {
 
   handleClick(event: any) {
     this.props.firebase.doSignOut();
+    this.props.history.push(ROUTES.LANDING);
     event.preventDefault();
   }
 
@@ -32,4 +27,7 @@ class SignOutButton extends React.Component<any, any> {
   }
 }
 
-export default withFirebase(SignOutButton);
+export default compose(
+  withFirebase,
+  withRouter
+)(SignOutButton);

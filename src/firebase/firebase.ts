@@ -12,6 +12,9 @@ const config = {
 };
 
 class Firebase {
+  auth: any;
+  db: any;
+
   constructor() {
     app.initializeApp(config);
 
@@ -21,21 +24,22 @@ class Firebase {
 
   // Auth API
 
-  doCreateUserWithEmailAndPassword = (email, password) =>
+  doCreateUserWithEmailAndPassword = (email: string, password: string) =>
     this.auth.createUserWithEmailAndPassword(email, password);
 
-  doSignInWithEmailAndPassword = (email, password) =>
+  doSignInWithEmailAndPassword = (email: string, password: string) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
   doSignOut = () => this.auth.signOut();
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+  doPasswordReset = (email: string) => this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+  doPasswordUpdate = (password: string) =>
+    this.auth.currentUser.updatePassword(password);
 
   // User API
 
-  user = uid => this.db.ref(`users/${uid}`);
+  user = (uid: string) => this.db.ref(`users/${uid}`);
 
   users = () => this.db.ref("users");
 }

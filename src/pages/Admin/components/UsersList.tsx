@@ -39,8 +39,9 @@ class UsersList extends React.Component<IUserProps, IUserState> {
     return (
       <div>
         Users:
-        {users.map((user: User) => (
+        {users.map((user: any) => (
           <UserComponent
+            key={user.uid}
             firstname={user.firstname}
             lastname={user.lastname}
             address={user.address}
