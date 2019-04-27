@@ -2,7 +2,8 @@ import * as React from "react";
 import AddItem from "./components/AddItem";
 import ConnectedItemsList from "./components/ItemList";
 import ConnectedItemSorter from "../../components/ItemSorter";
-import UsersList from './components/UsersList';
+import UsersList from "./components/UsersList";
+import { compose } from "recompose";
 
 const AdminPage = () => (
   <div>

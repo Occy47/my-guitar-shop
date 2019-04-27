@@ -5,6 +5,7 @@ import SignOutButton from "../SignOutButton";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import * as ROUTES from "../../constants/routes";
+import * as ROLES from "../../constants/roles";
 
 const Navigation = () => (
   <div>
@@ -36,6 +37,7 @@ const NavigationAuth = () => (
             FAQ
           </Link>
         </li>
+
         <li className="nav-item active">
           <Link className="nav-link" to={ROUTES.ADMIN}>
             Admin

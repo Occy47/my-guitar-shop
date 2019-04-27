@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { withFirebase } from "../../../firebase";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as ROUTES from "../../../constants/routes";
+import * as ROLES from "../../../constants/roles";
 
 export interface RegisterFormState {
   firstname: string;
@@ -12,6 +13,7 @@ export interface RegisterFormState {
   email: string;
   passwordOne: string;
   passwordTwo: string;
+  isAdmin: boolean;
   error: null | string;
 }
 
@@ -22,6 +24,7 @@ const INITIAL_STATE = {
   email: "",
   passwordOne: "",
   passwordTwo: "",
+  isAdmin: false,
   error: null
 };
 
@@ -44,7 +47,22 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
   }
 
   handleSubmit(event: any) {
-    const { firstname, lastname, address, email, passwordOne } = this.state;
+    const {
+      firstname,
+      lastname,
+      address,
+      email,
+      passwordOne,
+      isAdmin
+    } = this.state;
+
+    const roles: string[] = [];
+
+    if (isAdmin) {
+      roles.push(ROLES.ADMIN);
+    } else {
+      roles.push(ROLES.USER);
+    }
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
@@ -53,6 +71,7 @@ class RegisterForm extends React.Component<any, RegisterFormState> {
           firstname,
           lastname,
           address,
+          roles,
           email
         });
       })
