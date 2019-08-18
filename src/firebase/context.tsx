@@ -4,7 +4,7 @@ import Firebase from "./firebase";
 const FirebaseContext = React.createContext<Firebase | null>(null);
 
 export interface FirebaseContextProps {
-  firebase: Firebase;
+  firebase?: Firebase;
 }
 
 export const withFirebase = <P extends object>(
