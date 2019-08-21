@@ -6,6 +6,8 @@ import { ItemsState, Item } from "../../../redux/reducers/item";
 import { RootState, ItemsActions } from "../../../redux/types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import getSortedItems from "../../../redux/selectors";
+import Firebase, { withFirebase } from "../../../firebase";
+import { compose } from "recompose";
 
 const ItemList: React.FC<ItemsState> = props => {
   const { items } = props;
@@ -35,6 +37,7 @@ type ItemProps = {
   description: string;
   onDeleteItem: Function;
   onUpdateItem: Function;
+  firebase: Firebase;
 };
 
 class ItemComponent extends React.Component<ItemProps, any> {
@@ -54,11 +57,13 @@ class ItemComponent extends React.Component<ItemProps, any> {
     this.onChange = this.onChange.bind(this);
     this.handleFinishEditClick = this.handleFinishEditClick.bind(this);
   }
+
   handleDeleteClick(event: any) {
     const { id, category, make, model, description, price } = this.props;
     const item = { id, category, make, model, description, price };
 
     this.props.onDeleteItem(item);
+    this.props.firebase.item(item.id).remove();
     event.preventDefault();
   }
 
@@ -80,6 +85,9 @@ class ItemComponent extends React.Component<ItemProps, any> {
     const { id, category, make, model, description, price } = this.state;
     let item = { id, category, make, model, description, price };
     this.props.onUpdateItem(item);
+    this.props.firebase
+      .item(item.id)
+      .update({ category, make, model, description, price });
 
     this.setState({ isEditing: !this.state.isEditing });
     event.preventDefault();
@@ -193,9 +201,12 @@ const mapDispatchtoProps = (dispatch: Dispatch<ItemsActions>) => ({
 
 const ConnectedItemsList = connect(mapStateToProps)(ItemList);
 
-const ConnectedItemComponent = connect(
-  null,
-  mapDispatchtoProps
+const ConnectedItemComponent: React.ComponentClass<any> = compose(
+  connect(
+    null,
+    mapDispatchtoProps
+  ),
+  withFirebase
 )(ItemComponent);
 
 export default ConnectedItemsList;

@@ -71,6 +71,14 @@ class Firebase {
   user = (uid: string) => this.db.ref(`users/${uid}`);
 
   users = () => this.db.ref("users");
+
+  // Cart API
+
+  // Item API
+
+  item = (id: string) => this.db.ref(`items/${id}`);
+
+  items = () => this.db.ref("items");
 }
 
 export default Firebase;

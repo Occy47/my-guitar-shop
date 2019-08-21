@@ -3,13 +3,19 @@ import {
   ITEMS_DELETE,
   ITEMS_UPDATE,
   SORTER_SET,
-  USERS_SET
+  USERS_SET,
+  ITEMS_SET
 } from "./constants";
-import { Item } from "../redux/reducers/item";
+import { Item, ItemsState } from "../redux/reducers/item";
 
 import { StateType } from "typesafe-actions";
 import rootReducer from "../redux/reducers";
 import { User } from "../redux/reducers/user";
+
+interface SetItemsAction {
+  type: typeof ITEMS_SET;
+  payload: any;
+}
 
 interface AddItemAction {
   type: typeof ITEMS_ADD;
@@ -37,6 +43,10 @@ interface SetUsersAction {
 }
 
 export type RootState = StateType<typeof rootReducer>;
-export type ItemsActions = AddItemAction | DeleteItemAction | UpdateItemAction;
+export type ItemsActions =
+  | SetItemsAction
+  | AddItemAction
+  | DeleteItemAction
+  | UpdateItemAction;
 export type SorterActions = SortItemsAction;
 export type UsersActions = SetUsersAction;

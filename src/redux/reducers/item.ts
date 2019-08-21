@@ -1,4 +1,4 @@
-import { ITEMS_ADD, ITEMS_DELETE, ITEMS_UPDATE } from "../constants";
+import { ITEMS_ADD, ITEMS_DELETE, ITEMS_UPDATE, ITEMS_SET } from "../constants";
 import { ItemsActions } from "../types";
 
 export type Item = {
@@ -89,7 +89,6 @@ function applyAddItem(state: ItemsState, action: ItemsActions) {
   return { ...state, items };
 }
 
-// itemState reducer => state type error if string is passed
 function applyDeleteItem(state: ItemsState, action: ItemsActions) {
   let id = action.payload.id;
   let items = state.items.filter((item: Item) => item.id !== id);
@@ -106,6 +105,11 @@ function applyUpdateItem(state: ItemsState, action: ItemsActions) {
   return { ...state, items };
 }
 
+function applySetItems(state: ItemsState, action: ItemsActions) {
+  let items = action.payload;
+  return { ...state, items };
+}
+
 function itemsReducer(state = INITIAL_STATE, action: ItemsActions) {
   switch (action.type) {
     case ITEMS_ADD:
@@ -114,6 +118,8 @@ function itemsReducer(state = INITIAL_STATE, action: ItemsActions) {
       return applyDeleteItem(state, action);
     case ITEMS_UPDATE:
       return applyUpdateItem(state, action);
+    case ITEMS_SET:
+      return applySetItems(state, action);
     default:
       return state;
   }

@@ -9,18 +9,19 @@ import * as ROUTES from "../../constants/routes";
 class SignOutButton extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(event: any) {
-    this.props.firebase.doSignOut();
-    this.props.history.push(ROUTES.LANDING);
-    event.preventDefault();
-  }
+  // handleClick() {
+  //   this.props.firebase.doSignOut();
+  // }
 
   render() {
     return (
-      <Link className="nav-link" to={ROUTES.LANDING} onClick={this.handleClick}>
+      <Link
+        className="nav-link"
+        to={ROUTES.LANDING}
+        onClick={this.props.firebase.doSignOut}
+      >
         Sign Out
       </Link>
     );

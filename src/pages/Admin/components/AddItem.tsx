@@ -5,6 +5,8 @@ import { doAddItem } from "../../../redux/actions/item";
 import { Item } from "../../../redux/reducers/item";
 import { ItemsActions } from "../../../redux/types";
 import uuid from "uuid";
+import Firebase, { withFirebase } from "../../../firebase";
+import { compose } from "recompose";
 
 export interface IState {
   id: string;
@@ -17,6 +19,7 @@ export interface IState {
 
 export interface IProps {
   onAddItem: Function;
+  firebase: Firebase;
 }
 
 // if state type is IState => onChange function type error
@@ -47,6 +50,13 @@ class AddItem extends React.Component<IProps, IState> {
     let newItem = { id: uuid(), category, make, model, price, description };
 
     this.props.onAddItem(newItem);
+    this.props.firebase.item(newItem.id).set({
+      category,
+      make,
+      model,
+      price,
+      description
+    });
     this.setState({
       category: "",
       make: "",
@@ -124,7 +134,10 @@ const mapDispatchtoProps = (dispatch: Dispatch<ItemsActions>) => ({
   onAddItem: (item: Item) => dispatch(doAddItem(item))
 });
 
-export default connect(
-  null,
-  mapDispatchtoProps
+export default compose(
+  connect(
+    null,
+    mapDispatchtoProps
+  ),
+  withFirebase
 )(AddItem);

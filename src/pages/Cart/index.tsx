@@ -7,4 +7,6 @@ const CartPage = () => (
   </div>
 );
 
+const CartInfoAuth = () => <div />;
+
 export default CartPage;
