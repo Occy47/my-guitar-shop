@@ -3,8 +3,29 @@ import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes";
 import "./landing.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { doSetItems } from "../../redux/actions/item";
+import { ItemsActions } from "../../redux/types";
+import { withFirebase } from "../../firebase";
+import { compose } from "recompose";
+import { connect } from "react-redux";
 
-class LandingPage extends React.Component {
+class LandingPage extends React.Component<any, any> {
+  componentDidMount() {
+    this.props.firebase.items().on("value", (snapshot: any) => {
+      const itemsObject = snapshot.val();
+
+      const itemsList = Object.keys(itemsObject).map(key => ({
+        ...itemsObject[key],
+        id: key
+      }));
+      this.props.onSetItems(itemsList);
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.items().off();
+  }
+
   render() {
     return (
       <div className="container fill">
@@ -19,4 +40,16 @@ class LandingPage extends React.Component {
   }
 }
 
-export default LandingPage;
+const mapDispatchToProps = (dispatch: React.Dispatch<ItemsActions>) => ({
+  onSetItems: (items: any) => dispatch(doSetItems(items))
+});
+
+const ConnectedLandigPage = compose(
+  connect(
+    null,
+    mapDispatchToProps
+  ),
+  withFirebase
+)(LandingPage);
+
+export default ConnectedLandigPage;
