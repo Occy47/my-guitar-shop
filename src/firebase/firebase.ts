@@ -74,6 +74,8 @@ class Firebase {
 
   // Cart API
 
+  cart = (uid: string) => this.db.ref(`users/${uid}/cart`);
+
   // Item API
 
   item = (id: string) => this.db.ref(`items/${id}`);

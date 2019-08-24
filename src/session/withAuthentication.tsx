@@ -36,7 +36,6 @@ const withAuthentication = <P extends object>(
 
     render() {
       const { authUser }: any = this.state;
-      console.log(authUser);
       return (
         <AuthUserContext.Provider value={authUser}>
           <Component {...this.props} />
