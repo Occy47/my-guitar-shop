@@ -18,6 +18,7 @@ class ItemViewList extends React.Component<any, ItemsState> {
         {items.map((item: Item) => (
           <ItemViewCard
             key={item.id}
+            id={item.id}
             make={item.make}
             model={item.model}
             price={item.price}

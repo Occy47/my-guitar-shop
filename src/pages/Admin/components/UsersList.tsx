@@ -19,7 +19,7 @@ class UsersList extends React.Component<IUserProps, IUserState> {
   }
 
   componentDidMount() {
-    this.props.firebase.users().on("value", (snapshot: any) => {
+  this.props.firebase.users().on("value", (snapshot: any) => {
       const usersObject = snapshot.val();
 
       const usersList = Object.keys(usersObject).map(key => ({
