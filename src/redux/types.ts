@@ -6,7 +6,8 @@ import {
   USERS_SET,
   ITEMS_SET,
   ADD_ITEM_TO_CART,
-  DELETE_ITEM_FROM_CART
+  DELETE_ITEM_FROM_CART,
+  EMPTY_CART
 } from "./constants";
 import { Item, ItemsState } from "../redux/reducers/item";
 
@@ -54,6 +55,11 @@ interface DeleteItemFromCart {
   payload: any;
 }
 
+interface EmptyUserCart {
+  type: typeof EMPTY_CART;
+  payload?: any;
+}
+
 export type RootState = StateType<typeof rootReducer>;
 export type ItemsActions =
   | SetItemsAction
@@ -62,4 +68,7 @@ export type ItemsActions =
   | UpdateItemAction;
 export type SorterActions = SortItemsAction;
 export type UsersActions = SetUsersAction;
-export type CartItemsActions = AddItemToCartAction | DeleteItemFromCart;
+export type CartItemsActions =
+  | AddItemToCartAction
+  | DeleteItemFromCart
+  | EmptyUserCart;

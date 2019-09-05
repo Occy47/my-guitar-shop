@@ -1,4 +1,8 @@
-import { ADD_ITEM_TO_CART, DELETE_ITEM_FROM_CART } from "../constants";
+import {
+  ADD_ITEM_TO_CART,
+  DELETE_ITEM_FROM_CART,
+  EMPTY_CART
+} from "../constants";
 import { Item } from "./item";
 import { CartItemsActions } from "../types";
 
@@ -26,6 +30,12 @@ function applyDeleteItemFromCart(state: IcartState, action: CartItemsActions) {
   return { ...state, userCart, cartTotal };
 }
 
+function applyEmptyUserCart(state: IcartState, action: CartItemsActions) {
+  const userCart: Item[] = [];
+  const cartTotal = 0;
+  return { ...state, userCart, cartTotal };
+}
+
 function cartReducer(state = INITIAL_STATE, action: CartItemsActions) {
   switch (action.type) {
     case ADD_ITEM_TO_CART: {
@@ -33,6 +43,9 @@ function cartReducer(state = INITIAL_STATE, action: CartItemsActions) {
     }
     case DELETE_ITEM_FROM_CART: {
       return applyDeleteItemFromCart(state, action);
+    }
+    case EMPTY_CART: {
+      return applyEmptyUserCart(state, action);
     }
     default:
       return state;

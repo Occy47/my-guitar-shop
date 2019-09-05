@@ -57,6 +57,7 @@ const NavigationAuth: React.SFC<NavigationProps> = props => (
       </ul>
       <div>
         <ul className="navbar-nav my-2 my-sm-0 ">
+          <li className="nav-item active">{props.authUser.firstname}</li>
           <li className="nav-item active">
             <SignOutButton />
           </li>

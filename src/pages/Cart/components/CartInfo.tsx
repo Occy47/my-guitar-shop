@@ -4,17 +4,19 @@ import { connect } from "react-redux";
 import { compose } from "recompose";
 import { Dispatch } from "redux";
 import { CartItemsActions, RootState } from "../../../redux/types";
-import { totalmem } from "os";
-import { doDeleteItemFromCart } from "../../../redux/actions/cart";
+import { doDeleteItemFromCart, doEmptyCart } from "../../../redux/actions/cart";
+import { withRouter } from "react-router-dom";
+import * as ROUTES from "../../../constants/routes";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class CartInfo extends React.Component<any, any> {
   listener: any;
   constructor(props: any) {
     super(props);
     this.state = {
-      userID: "",
-      total: 0
+      userID: ""
     };
+    this.handleCheckoutButton = this.handleCheckoutButton.bind(this);
   }
   componentDidMount() {
     this.listener = this.props.firebase.auth.onAuthStateChanged((user: any) => {
@@ -30,20 +32,17 @@ class CartInfo extends React.Component<any, any> {
     this.listener();
   }
 
-  // getTotalPrice() {
-  //   if (this.props.userCart.length > 0) {
-  //     var totalPrice = this.props.userCart.reduce(
-  //       (prevValue: any, nextValue: any) => {
-  //         return {
-  //           price: Number(prevValue.price) + Number(nextValue.price)
-  //         };
-  //       }
-  //     );
-  //     this.setState({ total: totalPrice.price });
-  //   } else {
-  //     this.setState({ total: 0 });
-  //   }
-  // }
+  handleCheckoutButton() {
+    this.props.userCart.map((item: any) =>
+      this.props.firebase
+        .cart(this.state.userID)
+        .push(item)
+        .then(() => {
+          this.props.onEmptyUserCart();
+          this.props.history.push(ROUTES.HOME);
+        })
+    );
+  }
 
   render() {
     return (
@@ -54,13 +53,19 @@ class CartInfo extends React.Component<any, any> {
             <div>{item.model}</div>
             <div>{item.description}</div>
             <div>{item.price} kn</div>
-            <button onClick={() => this.props.onDeleteItemFromCart(item)}>
+            <button
+              className="btn btn-danger"
+              onClick={() => this.props.onDeleteItemFromCart(item)}
+            >
               Remove
             </button>
             <hr />
           </div>
         ))}
         <div>Total amount: {this.props.cartTotal} kn</div>
+        <button className="btn btn-primary" onClick={this.handleCheckoutButton}>
+          Checkout
+        </button>
       </div>
     );
   }
@@ -72,11 +77,13 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<CartItemsActions>) => ({
-  onDeleteItemFromCart: (item: any) => dispatch(doDeleteItemFromCart(item))
+  onDeleteItemFromCart: (item: any) => dispatch(doDeleteItemFromCart(item)),
+  onEmptyUserCart: () => dispatch(doEmptyCart())
 });
 
 export default compose(
   withFirebase,
+  withRouter,
   connect(
     mapStateToProps,
     mapDispatchToProps
