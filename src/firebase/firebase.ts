@@ -84,6 +84,10 @@ class Firebase {
   item = (id: string) => this.db.ref(`items/${id}`);
 
   items = () => this.db.ref("items");
+
+  // Storage API
+
+  // storageRef = () => this.storage.ref("images");
 }
 
 export default Firebase;

@@ -15,6 +15,8 @@ export interface IState {
   model: string;
   price: number;
   description: string;
+  url: string;
+  image: any;
 }
 
 export interface IProps {
@@ -33,11 +35,15 @@ class AddItem extends React.Component<IProps, IState> {
       make: "",
       model: "",
       price: 0,
-      description: ""
+      description: "",
+      url:"https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/images%2Fno_image_thumb.jpg?alt=media&token=36ff5469-1a5d-47cd-9535-db41e8768387",
+      image: null
     };
 
     this.onChange = this.onChange.bind(this);
     this.onCreateItem = this.onCreateItem.bind(this);
+    this.onImageChange = this.onImageChange.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
   onChange(event: any) {
@@ -45,9 +51,41 @@ class AddItem extends React.Component<IProps, IState> {
     event.preventDefault();
   }
 
+  onImageChange(event: any) {
+    if (event.target.files[0]) {
+      const newImage = event.target.files[0];
+      this.setState({ image: newImage });
+    }
+  }
+
+  handleUpload(event: any) {
+    const { image } = this.state;
+      this.props.firebase.storage
+        .ref(`images/${image.name}`)
+        .put(image)
+        .then(() => {
+          this.props.firebase.storage
+            .ref("images")
+            .child(image.name)
+            .getDownloadURL()
+            .then((url: string) => {
+              this.setState({ url: url });
+            });
+        });
+    event.preventDefault();
+  }
+
   onCreateItem(event: any) {
-    const { category, make, model, price, description } = this.state;
-    let newItem = { id: uuid(), category, make, model, price, description };
+    const { category, make, model, price, description, url } = this.state;
+    let newItem = {
+      id: uuid(),
+      category,
+      make,
+      model,
+      price,
+      description,
+      url
+    };
 
     this.props.onAddItem(newItem);
     this.props.firebase.item(newItem.id).set({
@@ -55,14 +93,17 @@ class AddItem extends React.Component<IProps, IState> {
       make,
       model,
       price,
-      description
+      description,
+      url
     });
     this.setState({
       category: "",
       make: "",
       model: "",
       price: 0,
-      description: ""
+      description: "",
+      url: "",
+      image: null
     });
     event.preventDefault();
   }
@@ -120,6 +161,13 @@ class AddItem extends React.Component<IProps, IState> {
               required
               onChange={this.onChange}
             />
+            <input
+              className="form-control col-2"
+              type="file"
+              name="file"
+              onChange={this.onImageChange}
+            />
+            <button onClick={this.handleUpload}>Upload image</button>
             <button type="submit" className="btn btn-secondary ml-3">
               Add Item
             </button>

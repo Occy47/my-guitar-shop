@@ -23,6 +23,7 @@ class ItemViewList extends React.Component<any, ItemsState> {
             model={item.model}
             price={item.price}
             description={item.description}
+            url={item.url}
           />
         ))}
       </div>

@@ -8,6 +8,7 @@ import { doDeleteItemFromCart, doEmptyCart } from "../../../redux/actions/cart";
 import { withRouter } from "react-router-dom";
 import * as ROUTES from "../../../constants/routes";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Item } from "../../../redux/reducers/item";
 
 class CartInfo extends React.Component<any, any> {
   listener: any;
@@ -22,7 +23,6 @@ class CartInfo extends React.Component<any, any> {
     this.listener = this.props.firebase.auth.onAuthStateChanged((user: any) => {
       if (user) {
         this.setState({ userID: user.uid });
-        console.log(user.uid);
       } else {
       }
     });
@@ -33,7 +33,7 @@ class CartInfo extends React.Component<any, any> {
   }
 
   handleCheckoutButton() {
-    this.props.userCart.map((item: any) =>
+    this.props.userCart.map((item: Item) =>
       this.props.firebase
         .cart(this.state.userID)
         .push(item)
@@ -47,7 +47,7 @@ class CartInfo extends React.Component<any, any> {
   render() {
     return (
       <div>
-        {this.props.userCart.map((item: any) => (
+        {this.props.userCart.map((item: Item) => (
           <div key={item.id}>
             <div>{item.make}</div>
             <div>{item.model}</div>
@@ -77,7 +77,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<CartItemsActions>) => ({
-  onDeleteItemFromCart: (item: any) => dispatch(doDeleteItemFromCart(item)),
+  onDeleteItemFromCart: (item: Item) => dispatch(doDeleteItemFromCart(item)),
   onEmptyUserCart: () => dispatch(doEmptyCart())
 });
 

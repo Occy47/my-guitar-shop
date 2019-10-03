@@ -18,12 +18,13 @@ class ItemViewCard extends React.Component<any, any> {
   }
 
   render() {
-    const { id, make, model, price, description } = this.props;
-    let item = { id, make, model, price, description };
+    const { id, make, model, price, description, url } = this.props;
+    let item = { id, make, model, price, description, url };
     console.log(item);
     return (
       <div className="col-sm">
         <div className="card mt-3" style={{ width: "200px" }}>
+          <img src={url} className="card-img-top" alt="..."></img>
           <div className="card-body">
             <h3 className="card-title">{make}</h3>
             <p className="card-text h5">{model}</p>
