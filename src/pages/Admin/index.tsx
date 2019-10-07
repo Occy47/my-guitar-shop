@@ -4,20 +4,25 @@ import ConnectedItemsList from "./components/ItemList";
 import ConnectedItemSorter from "../../components/ItemSorter";
 import UsersList from "./components/UsersList";
 import { compose } from "recompose";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { withAuthorization } from "../../session";
 import * as ROLES from "../../constants/roles";
+import * as ROUTES from "../../constants/routes";
+import AdminNavigation from "./components/AdminNavigation";
 
 const AdminPage = () => (
-  <div>
-    Admin Page
-    <AddItem />
-    <hr />
-    <ConnectedItemSorter />
-    <ConnectedItemsList />
-    <hr />
-    <UsersList />
-  </div>
+  <Router>
+    <div>
+      <h3>Admin Page</h3>
+      <AdminNavigation />
+      <Route exact path={ROUTES.ADMIN} component={AddItem} />
+      <hr />
+      <Route exact path={ROUTES.ADMIN} component={ConnectedItemSorter} />
+      <Route exact path={ROUTES.ADMIN} component={ConnectedItemsList} />
+      <Route path={ROUTES.ADMIN_USERS} component={UsersList} />
+    </div>
+  </Router>
 );
 
 const condition = (authUser: any) =>

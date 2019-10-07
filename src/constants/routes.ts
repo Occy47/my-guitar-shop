@@ -7,3 +7,4 @@ export const LOGIN = "/login";
 export const REGISTER = "/register";
 export const FORGOT_PASSWORD = "/forgot-pw";
 export const ADMIN = "/admin";
+export const ADMIN_USERS = "/admin/users";

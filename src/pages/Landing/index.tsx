@@ -30,7 +30,7 @@ class LandingPage extends React.Component<any, any> {
     return (
       <div className="container fill">
         <div className="container text-center ">
-          <div className="display-2">Welcome to My-guitar Shop!</div>
+          <div className="display-3">Welcome to My-guitar Shop!</div>
           <Link className="btn btn-primary lead" to={ROUTES.HOME}>
             Enter
           </Link>

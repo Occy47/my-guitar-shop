@@ -36,7 +36,8 @@ class AddItem extends React.Component<IProps, IState> {
       model: "",
       price: 0,
       description: "",
-      url:"https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/images%2Fno_image_thumb.jpg?alt=media&token=36ff5469-1a5d-47cd-9535-db41e8768387",
+      url:
+        "https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/images%2Fno_image_thumb.jpg?alt=media&token=36ff5469-1a5d-47cd-9535-db41e8768387",
       image: null
     };
 
@@ -60,18 +61,18 @@ class AddItem extends React.Component<IProps, IState> {
 
   handleUpload(event: any) {
     const { image } = this.state;
-      this.props.firebase.storage
-        .ref(`images/${image.name}`)
-        .put(image)
-        .then(() => {
-          this.props.firebase.storage
-            .ref("images")
-            .child(image.name)
-            .getDownloadURL()
-            .then((url: string) => {
-              this.setState({ url: url });
-            });
-        });
+    this.props.firebase.storage
+      .ref(`images/${image.name}`)
+      .put(image)
+      .then(() => {
+        this.props.firebase.storage
+          .ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then((url: string) => {
+            this.setState({ url: url });
+          });
+      });
     event.preventDefault();
   }
 
@@ -111,6 +112,7 @@ class AddItem extends React.Component<IProps, IState> {
   render() {
     return (
       <div className="list-group-item list-group-item-success">
+        <h5>Add item: </h5>
         <form onSubmit={this.onCreateItem}>
           <div className="form-row">
             <select

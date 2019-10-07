@@ -13,6 +13,7 @@ const ItemList: React.FC<ItemsState> = props => {
   const { items } = props;
   return (
     <div>
+      <h5>Items: </h5>
       {items.map(item => (
         <ConnectedItemComponent
           key={item.id}

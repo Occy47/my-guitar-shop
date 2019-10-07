@@ -17,7 +17,9 @@ import * as ROUTES from "../constants/routes";
 const App = () => (
   <Router>
     <div>
-      <Navigation />
+      <header>
+        <Navigation />
+      </header>
 
       <Route exact path={ROUTES.LANDING} component={LandingPage} />
       <Route path={ROUTES.HOME} component={HomePage} />

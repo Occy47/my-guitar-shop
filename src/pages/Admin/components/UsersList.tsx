@@ -19,7 +19,7 @@ class UsersList extends React.Component<IUserProps, IUserState> {
   }
 
   componentDidMount() {
-  this.props.firebase.users().on("value", (snapshot: any) => {
+    this.props.firebase.users().on("value", (snapshot: any) => {
       const usersObject = snapshot.val();
 
       const usersList = Object.keys(usersObject).map(key => ({
@@ -38,13 +38,11 @@ class UsersList extends React.Component<IUserProps, IUserState> {
     const { users } = this.props;
     return (
       <div>
-        Users:
+        <h5>Users: </h5>
         {users.map((user: any) => (
           <UserComponent
             key={user.uid}
             firstname={user.firstname}
-            lastname={user.lastname}
-            address={user.address}
             email={user.email}
           />
         ))}
@@ -60,16 +58,13 @@ const UserComponent: React.FC<User> = props => (
       {props.firstname}{" "}
     </span>
     <span>
-      <strong>Last name: </strong>
-      {props.lastname}{" "}
-    </span>
-    <span>
-      <strong>Address: </strong>
-      {props.address}{" "}
-    </span>
-    <span>
       <strong>E-mail: </strong>
-      {props.email}
+      {props.email}{" "}
+    </span>
+    <span>
+      <button type="button" className="btn btn-primary">
+        Details
+      </button>
     </span>
   </div>
 );
