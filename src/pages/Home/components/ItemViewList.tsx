@@ -14,18 +14,20 @@ class ItemViewList extends React.Component<any, ItemsState> {
   render() {
     const { items } = this.props;
     return (
-      <div className="row">
-        {items.map((item: Item) => (
-          <ItemViewCard
-            key={item.id}
-            id={item.id}
-            make={item.make}
-            model={item.model}
-            price={item.price}
-            description={item.description}
-            url={item.url}
-          />
-        ))}
+      <div className="container">
+        <div className="row">
+          {items.map((item: Item) => (
+            <ItemViewCard
+              key={item.id}
+              id={item.id}
+              make={item.make}
+              model={item.model}
+              price={item.price}
+              description={item.description}
+              url={item.url}
+            />
+          ))}
+        </div>
       </div>
     );
   }

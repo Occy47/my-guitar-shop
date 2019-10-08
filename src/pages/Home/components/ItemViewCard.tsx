@@ -22,8 +22,8 @@ class ItemViewCard extends React.Component<any, any> {
     let item = { id, make, model, price, description, url };
     console.log(item);
     return (
-      <div className="col-sm">
-        <div className="card mt-3" style={{ width: "200px" }}>
+      <div className="col-md-3">
+        <div className="card text-white bg-dark mb-4" style={{ width: "100%" }}>
           <img src={url} className="card-img-top" alt="..."></img>
           <div className="card-body">
             <h3 className="card-title">{make}</h3>

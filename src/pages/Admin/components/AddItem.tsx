@@ -110,6 +110,7 @@ class AddItem extends React.Component<IProps, IState> {
   }
 
   render() {
+    const isInvalid = this.state.image === null ? true : false;
     return (
       <div className="list-group-item list-group-item-success">
         <h5>Add item: </h5>
@@ -169,7 +170,9 @@ class AddItem extends React.Component<IProps, IState> {
               name="file"
               onChange={this.onImageChange}
             />
-            <button onClick={this.handleUpload}>Upload image</button>
+            <button onClick={this.handleUpload} disabled={isInvalid}>
+              Upload image
+            </button>
             <button type="submit" className="btn btn-secondary ml-3">
               Add Item
             </button>

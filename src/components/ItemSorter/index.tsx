@@ -22,7 +22,7 @@ class ItemSorter extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="input-group mb-3 w-25">
+      <div className="input-group mb-3 w-75">
         <div className="input-group-prepend">
           <label className="input-group-text">Filter</label>
         </div>
