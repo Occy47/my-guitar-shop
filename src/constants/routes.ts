@@ -8,3 +8,4 @@ export const REGISTER = "/register";
 export const FORGOT_PASSWORD = "/forgot-pw";
 export const ADMIN = "/admin";
 export const ADMIN_USERS = "/admin/users";
+export const ADMIN_USER = "/admin/user/:userId";

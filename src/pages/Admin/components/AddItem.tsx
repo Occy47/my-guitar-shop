@@ -37,7 +37,7 @@ class AddItem extends React.Component<IProps, IState> {
       price: 0,
       description: "",
       url:
-        "https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/images%2Fno_image_thumb.jpg?alt=media&token=36ff5469-1a5d-47cd-9535-db41e8768387",
+        "https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/thumbnails%2Fno_image_thumb.jpg?alt=media&token=9602f73e-b066-4069-a040-457a30e26fb4",
       image: null
     };
 
@@ -62,11 +62,11 @@ class AddItem extends React.Component<IProps, IState> {
   handleUpload(event: any) {
     const { image } = this.state;
     this.props.firebase.storage
-      .ref(`images/${image.name}`)
+      .ref(`thumbnails/${image.name}`)
       .put(image)
       .then(() => {
         this.props.firebase.storage
-          .ref("images")
+          .ref("thumbnails")
           .child(image.name)
           .getDownloadURL()
           .then((url: string) => {

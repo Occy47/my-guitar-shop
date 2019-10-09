@@ -6,6 +6,7 @@ import { compose, Dispatch } from "redux";
 import { doSetUsers } from "../../../redux/actions/user";
 import { connect } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 
 interface IUserProps {
   users: User[];
@@ -44,6 +45,7 @@ class UsersList extends React.Component<IUserProps, IUserState> {
             key={user.uid}
             firstname={user.firstname}
             email={user.email}
+            id={user.uid}
           />
         ))}
       </div>
@@ -51,7 +53,7 @@ class UsersList extends React.Component<IUserProps, IUserState> {
   }
 }
 
-const UserComponent: React.FC<User> = props => (
+const UserComponent: React.FC<any> = props => (
   <div className="list-group-item list-group-item-primary">
     <span>
       <strong>First name: </strong>
@@ -62,9 +64,11 @@ const UserComponent: React.FC<User> = props => (
       {props.email}{" "}
     </span>
     <span>
-      <button type="button" className="btn btn-primary">
-        Details
-      </button>
+      <Link to={`/admin/user/${props.id}`}>
+        <button type="button" className="btn btn-primary">
+          Details
+        </button>
+      </Link>
     </span>
   </div>
 );

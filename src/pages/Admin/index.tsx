@@ -10,6 +10,7 @@ import { withAuthorization } from "../../session";
 import * as ROLES from "../../constants/roles";
 import * as ROUTES from "../../constants/routes";
 import AdminNavigation from "./components/AdminNavigation";
+import UserDetails from "./components/UserDetails";
 
 const AdminPage = () => (
   <Router>
@@ -21,6 +22,7 @@ const AdminPage = () => (
       <Route exact path={ROUTES.ADMIN} component={ConnectedItemSorter} />
       <Route exact path={ROUTES.ADMIN} component={ConnectedItemsList} />
       <Route path={ROUTES.ADMIN_USERS} component={UsersList} />
+      <Route path={ROUTES.ADMIN_USER} component={UserDetails} />
     </div>
   </Router>
 );
