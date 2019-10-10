@@ -1,34 +1,27 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
 import { withFirebase } from "../../firebase";
-import { compose } from "recompose";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Nav from "react-bootstrap/Nav";
 
 import * as ROUTES from "../../constants/routes";
 
 class SignOutButton extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  // handleClick() {
-  //   this.props.firebase.doSignOut();
-  // }
+  handleClick() {
+    this.props.firebase.doSignOut();
+  }
 
   render() {
     return (
-      <Link
-        className="nav-link"
-        to={ROUTES.LANDING}
-        onClick={this.props.firebase.doSignOut}
-      >
+      <Nav.Link href={ROUTES.LANDING} onClick={this.handleClick}>
         Sign Out
-      </Link>
+      </Nav.Link>
     );
   }
 }
 
-export default compose(
-  withFirebase,
-  withRouter
-)(SignOutButton);
+export default withFirebase(SignOutButton);
