@@ -8,6 +8,7 @@ import { ItemsActions } from "../../redux/types";
 import { withFirebase } from "../../firebase";
 import { compose } from "recompose";
 import { connect } from "react-redux";
+import Carousel from "./components/HomeCarousel";
 
 class LandingPage extends React.Component<any, any> {
   componentDidMount() {
@@ -29,6 +30,7 @@ class LandingPage extends React.Component<any, any> {
   render() {
     return (
       <div className="container fill">
+        <Carousel />
         <div className="container text-center ">
           <div className="display-3">Welcome to My-guitar Shop!</div>
           <Link className="btn btn-primary lead" to={ROUTES.HOME}>

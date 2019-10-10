@@ -3,16 +3,14 @@ import { Link } from "react-router-dom";
 import { AuthUserContext } from "../../session";
 import SignOutButton from "../SignOutButton";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
 
 import * as ROUTES from "../../constants/routes";
 import * as ROLES from "../../constants/roles";
 
 interface NavigationProps {
   authUser: any;
-}
-
-interface NavigationState {
-  menu: boolean;
 }
 
 const Navigation = () => (
@@ -23,134 +21,95 @@ const Navigation = () => (
   </AuthUserContext.Consumer>
 );
 
-class NavigationAuth extends React.Component<NavigationProps, NavigationState> {
+class NavigationAuth extends React.Component<NavigationProps, any> {
   constructor(props: any) {
     super(props);
-    this.state = {
-      menu: false
-    };
-    this.handleTooggleManu = this.handleTooggleManu.bind(this);
-  }
-
-  handleTooggleManu() {
-    this.setState({ menu: !this.state.menu });
   }
 
   render() {
-    const show = this.state.menu ? "show" : "";
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
-        <Link className="navbar-brand" to={ROUTES.LANDING}>
-          My-Guitar
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={this.handleTooggleManu}
-          data-toggle="collapse"
-          data-target="#navbarMain"
-          aria-controls="navbarMain"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className={"navbar-collapse collapse " + show} id="navbarMain">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
+      <Navbar collapseOnSelect expand="sm" bg="primary" variant="dark">
+        <Navbar.Brand>
+          <Link className="navbar-brand" to={ROUTES.LANDING}>
+            My-Guitar
+          </Link>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbar-nav-main" />
+        <Navbar.Collapse id="navbar-nav-main">
+          <Nav className="mr-auto">
+            <Nav.Item>
               <Link className="nav-link" to={ROUTES.HOME}>
                 Home
               </Link>
-            </li>
-            <li className="nav-item active">
+            </Nav.Item>
+            <Nav.Item>
               <Link className="nav-link" to={ROUTES.CART}>
                 Cart
               </Link>
-            </li>
-            <li className="nav-item active">
+            </Nav.Item>
+            <Nav.Item>
               <Link className="nav-link" to={ROUTES.FAQ}>
                 FAQ
               </Link>
-            </li>
+            </Nav.Item>
             {this.props.authUser.roles.includes(ROLES.ADMIN) && (
-              <li className="nav-item active">
+              <Nav.Item>
                 <Link className="nav-link" to={ROUTES.ADMIN}>
                   Admin
                 </Link>
-              </li>
+              </Nav.Item>
             )}
-          </ul>
-          <ul className="navbar-nav my-2 my-md-0">
-            <li className="nav-item active">{this.props.authUser.firstname}</li>
-            <li className="nav-item active">
-              <SignOutButton />
-            </li>
-          </ul>
-        </div>
-      </nav>
+          </Nav>
+          <Nav className="mr-sm-2">
+            <SignOutButton />
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }
 
-class NavigationNonAuth extends React.Component<any, NavigationState> {
+class NavigationNonAuth extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
-    this.state = {
-      menu: false
-    };
-    this.handleTooggleManu = this.handleTooggleManu.bind(this);
-  }
-
-  handleTooggleManu() {
-    this.setState({ menu: !this.state.menu });
   }
 
   render() {
-    const show = this.state.menu ? "show" : "";
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
-        <Link className="navbar-brand" to={ROUTES.LANDING}>
-          My-Guitar
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={this.handleTooggleManu}
-          data-toggle="collapse"
-          data-target="#navbarMain"
-          aria-controls="navbarMain"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className={"navbar-collapse collapse " + show} id="navbarMain">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
+      <Navbar collapseOnSelect expand="sm" bg="primary" variant="dark">
+        <Navbar.Brand>
+          <Link className="navbar-brand" to={ROUTES.LANDING}>
+            My-Guitar
+          </Link>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbar-nav-main" />
+        <Navbar.Collapse id="navbar-nav-main">
+          <Nav className="mr-auto">
+            <Nav.Item>
               <Link className="nav-link" to={ROUTES.HOME}>
                 Home
               </Link>
-            </li>
-            <li className="nav-item active">
+            </Nav.Item>
+            <Nav.Item>
               <Link className="nav-link" to={ROUTES.FAQ}>
                 FAQ
               </Link>
-            </li>
-          </ul>
-          <ul className="navbar-nav my-2 my-md-0">
-            <li className="nav-item active">
+            </Nav.Item>
+          </Nav>
+          <Nav className="mr-sm-2">
+            <Nav.Item>
               <Link className="nav-link" to={ROUTES.REGISTER}>
                 Register
               </Link>
-            </li>
-            <li className="nav-item active ">
-              <Link className="nav-link " to={ROUTES.LOGIN}>
+            </Nav.Item>
+            <Nav.Item>
+              <Link className="nav-link" to={ROUTES.LOGIN}>
                 Login
               </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+            </Nav.Item>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }
