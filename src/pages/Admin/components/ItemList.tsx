@@ -8,12 +8,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import getSortedItems from "../../../redux/selectors";
 import Firebase, { withFirebase } from "../../../firebase";
 import { compose } from "recompose";
+import ConnectedItemSorter from "../../../components/ItemSorter";
 
 const ItemList: React.FC<ItemsState> = props => {
   const { items } = props;
   return (
     <div>
       <h5>Items: </h5>
+      <ConnectedItemSorter />
       {items.map(item => (
         <ConnectedItemComponent
           key={item.id}

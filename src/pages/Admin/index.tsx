@@ -19,7 +19,6 @@ const AdminPage = () => (
       <AdminNavigation />
       <Route exact path={ROUTES.ADMIN} component={AddItem} />
       <hr />
-      <Route exact path={ROUTES.ADMIN} component={ConnectedItemSorter} />
       <Route exact path={ROUTES.ADMIN} component={ConnectedItemsList} />
       <Route path={ROUTES.ADMIN_USERS} component={UsersList} />
       <Route path={ROUTES.ADMIN_USER} component={UserDetails} />

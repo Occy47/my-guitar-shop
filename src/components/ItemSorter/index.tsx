@@ -4,35 +4,53 @@ import { Dispatch } from "redux";
 import { SorterActions } from "../../redux/types";
 import { connect } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
+import Button from "react-bootstrap/Button";
 
 class ItemSorter extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
 
-    this.onChange = this.onChange.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
   }
 
   componentDidMount() {
     this.props.onSetFilter("SHOW_ALL");
   }
 
-  onChange(event: any) {
-    this.props.onSetFilter(event.currentTarget.value);
+  handleFilter(filter: string) {
+    this.props.onSetFilter(filter);
   }
 
   render() {
     return (
-      <div className="input-group mb-3 w-75">
-        <div className="input-group-prepend">
-          <label className="input-group-text">Filter</label>
-        </div>
-        <select className="custom-select" onChange={this.onChange}>
-          <option value="SHOW_ALL">Show all</option>
-          <option value="SHOW_GUITARS">Guitars</option>
-          <option value="SHOW_AMPS">Amps</option>
-          <option value="SHOW_OTHER">Other</option>
-        </select>
-      </div>
+      <DropdownButton id="dropdown-item-button" title="Filter">
+        <Dropdown.Item
+          as="button"
+          onClick={() => this.handleFilter("SHOW_ALL")}
+        >
+          Show all
+        </Dropdown.Item>
+        <Dropdown.Item
+          as="button"
+          onClick={() => this.handleFilter("SHOW_GUITARS")}
+        >
+          Guitars
+        </Dropdown.Item>
+        <Dropdown.Item
+          as="button"
+          onClick={() => this.handleFilter("SHOW_AMPS")}
+        >
+          Amps
+        </Dropdown.Item>
+        <Dropdown.Item
+          as="button"
+          onClick={() => this.handleFilter("SHOW_OTHER")}
+        >
+          Other
+        </Dropdown.Item>
+      </DropdownButton>
     );
   }
 }

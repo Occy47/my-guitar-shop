@@ -61,6 +61,9 @@ class NavigationAuth extends React.Component<NavigationProps, any> {
             )}
           </Nav>
           <Nav className="mr-sm-2">
+            <Navbar.Text>
+              Signed in as: {this.props.authUser.firstname}
+            </Navbar.Text>
             <SignOutButton />
           </Nav>
         </Navbar.Collapse>

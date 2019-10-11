@@ -7,13 +7,15 @@ import { ItemsActions } from "../../../redux/types";
 import uuid from "uuid";
 import Firebase, { withFirebase } from "../../../firebase";
 import { compose } from "recompose";
+import Form from "react-bootstrap/Form";
+import { Col, Button } from "react-bootstrap";
 
 export interface IState {
   id: string;
   category: string;
   make: string;
   model: string;
-  price: number;
+  price: string;
   description: string;
   url: string;
   image: any;
@@ -34,7 +36,7 @@ class AddItem extends React.Component<IProps, IState> {
       category: "",
       make: "",
       model: "",
-      price: 0,
+      price: "0",
       description: "",
       url:
         "https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/thumbnails%2Fno_image_thumb.jpg?alt=media&token=9602f73e-b066-4069-a040-457a30e26fb4",
@@ -101,7 +103,7 @@ class AddItem extends React.Component<IProps, IState> {
       category: "",
       make: "",
       model: "",
-      price: 0,
+      price: "0",
       description: "",
       url: "",
       image: null
@@ -112,73 +114,78 @@ class AddItem extends React.Component<IProps, IState> {
   render() {
     const isInvalid = this.state.image === null ? true : false;
     return (
-      <div className="list-group-item list-group-item-success">
+      <Form
+        className="list-group-item list-group-item-success"
+        onSubmit={this.onCreateItem}
+      >
         <h5>Add item: </h5>
-        <form onSubmit={this.onCreateItem}>
-          <div className="form-row">
-            <select
-              className="form-control col-2"
-              name="category"
-              value={this.state.category}
-              onChange={this.onChange}
-              required
-            >
-              <option value="">none</option>
+        <Form.Row>
+          <Col>
+            <Form.Control as="select" name="category" onChange={this.onChange}>
+              <option value="">category</option>
               <option value="guitars">guitars</option>
               <option value="amps">amps</option>
               <option value="other">other</option>
-            </select>
-            <input
-              className="form-control col-2"
+            </Form.Control>
+          </Col>
+          <Col>
+            <Form.Control
               type="text"
               name="make"
-              value={this.state.make}
-              placeholder="Enter make"
-              required
               onChange={this.onChange}
+              placeholder="Make"
+              required
             />
-            <input
-              className="form-control col-2"
+          </Col>
+          <Col>
+            <Form.Control
+              as="input"
               type="text"
               name="model"
-              value={this.state.model}
-              placeholder="Enter model"
-              required
               onChange={this.onChange}
+              required
+              placeholder="Model"
             />
-            <input
-              className="form-control col-2"
-              type="number"
+          </Col>
+        </Form.Row>
+        <Form.Row>
+          <Col>
+            <Form.Control
+              type="text"
               name="price"
-              value={this.state.price}
-              placeholder="Enter price"
-              required
               onChange={this.onChange}
+              placeholder="Price"
+              required
             />
-            <input
-              className="form-control col-2"
+          </Col>
+          <Col>
+            <Form.Control
               type="text"
               name="description"
-              value={this.state.description}
-              placeholder="Description"
-              required
               onChange={this.onChange}
+              required
+              placeholder="Description"
             />
-            <input
-              className="form-control col-2"
-              type="file"
+          </Col>
+        </Form.Row>
+        <Form.Row>
+          <Col>
+            <Form.Control
               name="file"
+              type="file"
               onChange={this.onImageChange}
             />
-            <button onClick={this.handleUpload} disabled={isInvalid}>
+          </Col>
+          <Col>
+            <Button variant="primary" disabled={isInvalid}>
               Upload image
-            </button>
-            <button type="submit" className="btn btn-secondary ml-3">
-              Add Item
-            </button>
-          </div>
-        </form>
-      </div>
+            </Button>
+          </Col>
+        </Form.Row>
+        <Button variant="primary" type="submit">
+          Add item
+        </Button>
+      </Form>
     );
   }
 }
