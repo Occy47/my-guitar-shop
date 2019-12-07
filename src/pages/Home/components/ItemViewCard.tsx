@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Dispatch } from "redux";
-import { CartItemsActions } from "../../../redux/types";
-import { doAddItemToCart } from "../../../redux/actions/cart";
 import CardModal from "./CardModal";
 import { connect } from "react-redux";
 import { doAddItemToCartWithAlert } from "../../../redux/thunks";
 import { ThunkDispatch } from "redux-thunk";
+import { AuthUserContext } from "../../../session";
+import { withRouter } from "react-router";
+import { compose } from "recompose";
+import * as ROUTES from "../../../constants/routes";
 
 interface CardProps {
   make: string;
@@ -32,29 +33,65 @@ class ItemViewCard extends React.Component<any, any> {
     const { id, make, model, price, description, url } = this.props;
     let item = { id, make, model, price, description, url };
     return (
-      <div className="col-md-3">
-        <div className="card text-white bg-dark mb-4" style={{ width: "100%" }}>
-          <img
-            src={url}
-            className="card-img-top"
-            alt="..."
-            onClick={this.handleShowModal}
-          ></img>
-          <div className="card-body">
-            <h3 className="card-title">{make}</h3>
-            <p className="card-text h5">{model}</p>
-            <p className="card-text">{description}</p>
-            <p>{price} kn</p>
-            <button
-              className="btn btn-primary"
-              onClick={() => this.props.onAddItemToCart(item, item.id)}
-            >
-              Add to cart
-            </button>
-          </div>
-        </div>
-        <CardModal show={modalShow} onHide={this.handleShowModal} />
-      </div>
+      <AuthUserContext.Consumer>
+        {authUser =>
+          authUser ? (
+            <div className="col-md-3">
+              <div
+                className="card text-white bg-dark mb-4"
+                style={{ width: "100%" }}
+              >
+                <img
+                  src={url}
+                  className="card-img-top"
+                  alt="..."
+                  onClick={this.handleShowModal}
+                ></img>
+                <div className="card-body">
+                  <h3 className="card-title">{make}</h3>
+                  <p className="card-text h5">{model}</p>
+                  <p className="card-text">{description}</p>
+                  <p>{price} kn</p>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => this.props.onAddItemToCart(item, item.id)}
+                  >
+                    Add to cart
+                  </button>
+                </div>
+              </div>
+              <CardModal show={modalShow} onHide={this.handleShowModal} />
+            </div>
+          ) : (
+            <div className="col-md-3">
+              <div
+                className="card text-white bg-dark mb-4"
+                style={{ width: "100%" }}
+              >
+                <img
+                  src={url}
+                  className="card-img-top"
+                  alt="..."
+                  onClick={this.handleShowModal}
+                ></img>
+                <div className="card-body">
+                  <h3 className="card-title">{make}</h3>
+                  <p className="card-text h5">{model}</p>
+                  <p className="card-text">{description}</p>
+                  <p>{price} kn</p>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => this.props.history.push(ROUTES.LOGIN)}
+                  >
+                    Add to cart
+                  </button>
+                </div>
+              </div>
+              <CardModal show={modalShow} onHide={this.handleShowModal} />
+            </div>
+          )
+        }
+      </AuthUserContext.Consumer>
     );
   }
 }
@@ -64,4 +101,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
     dispatch(doAddItemToCartWithAlert(item, id))
 });
 
-export default connect(null, mapDispatchToProps)(ItemViewCard);
+export default compose<any, any>(
+  connect(null, mapDispatchToProps),
+  withRouter
+)(ItemViewCard);
