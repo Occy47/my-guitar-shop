@@ -4,6 +4,8 @@ import { CartItemsActions } from "../../../redux/types";
 import { doAddItemToCart } from "../../../redux/actions/cart";
 import CardModal from "./CardModal";
 import { connect } from "react-redux";
+import { doAddItemToCartWithAlert } from "../../../redux/thunks";
+import { ThunkDispatch } from "redux-thunk";
 
 interface CardProps {
   make: string;
@@ -45,7 +47,7 @@ class ItemViewCard extends React.Component<any, any> {
             <p>{price} kn</p>
             <button
               className="btn btn-primary"
-              onClick={() => this.props.onAddItemToCart(item)}
+              onClick={() => this.props.onAddItemToCart(item, item.id)}
             >
               Add to cart
             </button>
@@ -57,11 +59,9 @@ class ItemViewCard extends React.Component<any, any> {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<CartItemsActions>) => ({
-  onAddItemToCart: (item: any) => dispatch(doAddItemToCart(item))
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
+  onAddItemToCart: (item: any, id: string) =>
+    dispatch(doAddItemToCartWithAlert(item, id))
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(ItemViewCard);
+export default connect(null, mapDispatchToProps)(ItemViewCard);
