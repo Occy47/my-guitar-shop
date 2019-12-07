@@ -29,7 +29,6 @@ class ItemViewCard extends React.Component<any, any> {
     const { modalShow } = this.state;
     const { id, make, model, price, description, url } = this.props;
     let item = { id, make, model, price, description, url };
-    console.log(item);
     return (
       <div className="col-md-3">
         <div className="card text-white bg-dark mb-4" style={{ width: "100%" }}>

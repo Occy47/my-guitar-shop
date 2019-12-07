@@ -177,7 +177,11 @@ class AddItem extends React.Component<IProps, IState> {
             />
           </Col>
           <Col>
-            <Button variant="primary" disabled={isInvalid}>
+            <Button
+              variant="primary"
+              disabled={isInvalid}
+              onClick={this.handleUpload}
+            >
               Upload image
             </Button>
           </Col>
