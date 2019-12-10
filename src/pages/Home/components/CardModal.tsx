@@ -19,24 +19,12 @@ class CardModal extends React.Component<any, any> {
         <Modal.Header closeButton></Modal.Header>
         <Modal.Body>
           <Carousel interval={50000}>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/carousel%2Fexaple_1.jpg?alt=media&token=3ac25107-9ae6-48a4-9967-9ed9b1a92cb3"
-              />
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/carousel%2Fexaple_2.jpg?alt=media&token=c21d0965-c10b-4649-8404-cb4157077696"
-              />
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/carousel%2Fexaple_3.jpg?alt=media&token=9e8817be-413c-40fe-84b6-40ef4e78a50c"
-              />
-            </Carousel.Item>
+            {this.props.images.map((image: string) => (
+              <Carousel.Item>
+                {" "}
+                <img className="d-block w-100" src={image} />{" "}
+              </Carousel.Item>
+            ))}
           </Carousel>
         </Modal.Body>
         <Modal.Footer>

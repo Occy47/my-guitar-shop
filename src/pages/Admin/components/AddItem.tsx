@@ -17,8 +17,14 @@ export interface IState {
   model: string;
   price: string;
   description: string;
-  url: string;
-  image: any;
+  thumbUrl: string;
+  imageOneUrl: string;
+  imageTwoUrl: string;
+  imageThreeUrl: string;
+  thumbnail: any;
+  imageOne: any;
+  imageTwo: any;
+  imageThree: any;
 }
 
 export interface IProps {
@@ -32,21 +38,33 @@ class AddItem extends React.Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      id: "",
+      id: uuid(),
       category: "",
       make: "",
       model: "",
       price: "0",
       description: "",
-      url:
-        "https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/thumbnails%2Fno_image_thumb.jpg?alt=media&token=9602f73e-b066-4069-a040-457a30e26fb4",
-      image: null
+      thumbUrl:
+        "https://firebasestorage.googleapis.com/v0/b/my-guitar-shop.appspot.com/o/thumbnails%2Fno_thumbnail_thumb.jpg?alt=media&token=9602f73e-b066-4069-a040-457a30e26fb4",
+      imageOneUrl: "",
+      imageTwoUrl: "",
+      imageThreeUrl: "",
+      thumbnail: null,
+      imageOne: null,
+      imageTwo: null,
+      imageThree: null
     };
 
     this.onChange = this.onChange.bind(this);
     this.onCreateItem = this.onCreateItem.bind(this);
-    this.onImageChange = this.onImageChange.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
+    this.onThumbnailChange = this.onThumbnailChange.bind(this);
+    this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
+    this.onImageOneChange = this.onImageOneChange.bind(this);
+    this.onImageTwoChange = this.onImageTwoChange.bind(this);
+    this.onImageThreeChange = this.onImageThreeChange.bind(this);
+    this.handleImageOneUpload = this.handleImageOneUpload.bind(this);
+    this.handleImageTwoUpload = this.handleImageTwoUpload.bind(this);
+    this.handleImageThreeUpload = this.handleImageThreeUpload.bind(this);
   }
 
   onChange(event: any) {
@@ -54,40 +72,121 @@ class AddItem extends React.Component<IProps, IState> {
     event.preventDefault();
   }
 
-  onImageChange(event: any) {
+  onThumbnailChange(event: any) {
     if (event.target.files[0]) {
       const newImage = event.target.files[0];
-      this.setState({ image: newImage });
+      this.setState({ thumbnail: newImage });
     }
   }
 
-  handleUpload(event: any) {
-    const { image } = this.state;
+  handleThumbnailUpload(event: any) {
+    const { thumbnail } = this.state;
     this.props.firebase.storage
-      .ref(`thumbnails/${image.name}`)
-      .put(image)
+      .ref(`thumbnails/${thumbnail.name}`)
+      .put(thumbnail)
       .then(() => {
         this.props.firebase.storage
           .ref("thumbnails")
-          .child(image.name)
+          .child(thumbnail.name)
           .getDownloadURL()
           .then((url: string) => {
-            this.setState({ url: url });
+            this.setState({ thumbUrl: url });
           });
       });
     event.preventDefault();
   }
 
+  onImageOneChange(event: any) {
+    if (event.target.files[0]) {
+      const newImage = event.target.files[0];
+      this.setState({ imageOne: newImage });
+    }
+  }
+
+  handleImageOneUpload(event: any) {
+    const { imageOne, id } = this.state;
+    this.props.firebase.storage
+      .ref(`images/${id}/${imageOne.name}`)
+      .put(imageOne)
+      .then(() => {
+        this.props.firebase.storage
+          .ref(`images/${id}`)
+          .child(imageOne.name)
+          .getDownloadURL()
+          .then((url: string) => {
+            this.setState({ imageOneUrl: url });
+          });
+      });
+  }
+
+  onImageTwoChange(event: any) {
+    if (event.target.files[0]) {
+      const newImage = event.target.files[0];
+      this.setState({ imageTwo: newImage });
+    }
+  }
+
+  handleImageTwoUpload() {
+    const { imageTwo, id } = this.state;
+    this.props.firebase.storage
+      .ref(`images/${id}/${imageTwo.name}`)
+      .put(imageTwo)
+      .then(() => {
+        this.props.firebase.storage
+          .ref(`images/${id}`)
+          .child(imageTwo.name)
+          .getDownloadURL()
+          .then((url: string) => {
+            this.setState({ imageTwoUrl: url });
+          });
+      });
+  }
+
+  onImageThreeChange(event: any) {
+    if (event.target.files[0]) {
+      const newImage = event.target.files[0];
+      this.setState({ imageThree: newImage });
+    }
+  }
+
+  handleImageThreeUpload() {
+    const { imageThree, id } = this.state;
+    this.props.firebase.storage
+      .ref(`images/${id}/${imageThree.name}`)
+      .put(imageThree)
+      .then(() => {
+        this.props.firebase.storage
+          .ref(`images/${id}`)
+          .child(imageThree.name)
+          .getDownloadURL()
+          .then((url: string) => {
+            this.setState({ imageThreeUrl: url });
+          });
+      });
+  }
+
   onCreateItem(event: any) {
-    const { category, make, model, price, description, url } = this.state;
-    let newItem = {
-      id: uuid(),
+    const {
+      id,
       category,
       make,
       model,
       price,
       description,
-      url
+      thumbUrl,
+      imageOneUrl,
+      imageTwoUrl,
+      imageThreeUrl
+    } = this.state;
+    let newItem = {
+      id,
+      category,
+      make,
+      model,
+      price,
+      description,
+      thumbUrl,
+      images: { imageOneUrl, imageTwoUrl, imageThreeUrl }
     };
 
     this.props.onAddItem(newItem);
@@ -97,7 +196,8 @@ class AddItem extends React.Component<IProps, IState> {
       model,
       price,
       description,
-      url
+      thumbUrl,
+      images: { imageOneUrl, imageTwoUrl, imageThreeUrl }
     });
     this.setState({
       category: "",
@@ -105,14 +205,20 @@ class AddItem extends React.Component<IProps, IState> {
       model: "",
       price: "0",
       description: "",
-      url: "",
-      image: null
+      thumbUrl: "",
+      imageOneUrl: "",
+      imageTwoUrl: "",
+      imageThreeUrl: "",
+      thumbnail: null,
+      imageOne: null,
+      imageTwo: null,
+      imageThree: null
     });
     event.preventDefault();
   }
 
   render() {
-    const isInvalid = this.state.image === null ? true : false;
+    const isInvalid = this.state.thumbnail === null ? true : false;
     return (
       <Form
         className="list-group-item list-group-item-success"
@@ -171,18 +277,72 @@ class AddItem extends React.Component<IProps, IState> {
         <Form.Row>
           <Col>
             <Form.Control
-              name="file"
+              name="thumbnail"
               type="file"
-              onChange={this.onImageChange}
+              onChange={this.onThumbnailChange}
             />
           </Col>
           <Col>
             <Button
               variant="primary"
               disabled={isInvalid}
-              onClick={this.handleUpload}
+              onClick={this.handleThumbnailUpload}
             >
-              Upload image
+              Upload thumbnail
+            </Button>
+          </Col>
+        </Form.Row>
+        <Form.Row>
+          <Col>
+            <Form.Control
+              name="imageOne"
+              type="file"
+              onChange={this.onImageOneChange}
+            />
+          </Col>
+          <Col>
+            <Button
+              variant="primary"
+              disabled={isInvalid}
+              onClick={this.handleImageOneUpload}
+            >
+              Upload image 1
+            </Button>
+          </Col>
+        </Form.Row>
+        <Form.Row>
+          <Col>
+            <Form.Control
+              name="imageTwo"
+              type="file"
+              onChange={this.onImageTwoChange}
+            />
+          </Col>
+          <Col>
+            <Button
+              variant="primary"
+              disabled={isInvalid}
+              onClick={this.handleImageTwoUpload}
+            >
+              Upload image 2
+            </Button>
+          </Col>
+        </Form.Row>
+        <Form.Row>
+          <Col>
+            <Form.Control
+              name="imageThree"
+              type="file"
+              onChange={this.onImageThreeChange}
+            />
+          </Col>
+          <Col>
+            <Button
+              variant="primary"
+              disabled={isInvalid}
+              onClick={this.handleImageThreeUpload}
+            >
+              Upload image 3
             </Button>
           </Col>
         </Form.Row>
@@ -199,9 +359,6 @@ const mapDispatchtoProps = (dispatch: Dispatch<ItemsActions>) => ({
 });
 
 export default compose(
-  connect(
-    null,
-    mapDispatchtoProps
-  ),
+  connect(null, mapDispatchtoProps),
   withFirebase
 )(AddItem);

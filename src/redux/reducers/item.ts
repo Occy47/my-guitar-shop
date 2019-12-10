@@ -8,7 +8,8 @@ export type Item = {
   model: string;
   price: number;
   description: string;
-  url: string;
+  thumbUrl: string;
+  images: object;
 };
 
 export interface ItemsState {

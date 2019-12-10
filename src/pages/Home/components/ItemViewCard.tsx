@@ -30,8 +30,22 @@ class ItemViewCard extends React.Component<any, any> {
 
   render() {
     const { modalShow } = this.state;
-    const { id, make, model, price, description, url } = this.props;
-    let item = { id, make, model, price, description, url };
+    const {
+      id,
+      make,
+      model,
+      price,
+      description,
+      thumbUrl,
+      images
+    } = this.props;
+    let item = { id, make, model, price, description, thumbUrl };
+    let imageArray = [
+      images.imageOneUrl,
+      images.imageTwoUrl,
+      images.imageThreeUrl
+    ];
+    console.log(imageArray);
     return (
       <AuthUserContext.Consumer>
         {authUser =>
@@ -42,7 +56,7 @@ class ItemViewCard extends React.Component<any, any> {
                 style={{ width: "100%" }}
               >
                 <img
-                  src={url}
+                  src={thumbUrl}
                   className="card-img-top"
                   alt="..."
                   onClick={this.handleShowModal}
@@ -60,7 +74,11 @@ class ItemViewCard extends React.Component<any, any> {
                   </button>
                 </div>
               </div>
-              <CardModal show={modalShow} onHide={this.handleShowModal} />
+              <CardModal
+                show={modalShow}
+                onHide={this.handleShowModal}
+                images={imageArray}
+              />
             </div>
           ) : (
             <div className="col-md-3">
@@ -69,7 +87,7 @@ class ItemViewCard extends React.Component<any, any> {
                 style={{ width: "100%" }}
               >
                 <img
-                  src={url}
+                  src={thumbUrl}
                   className="card-img-top"
                   alt="..."
                   onClick={this.handleShowModal}
@@ -87,7 +105,11 @@ class ItemViewCard extends React.Component<any, any> {
                   </button>
                 </div>
               </div>
-              <CardModal show={modalShow} onHide={this.handleShowModal} />
+              <CardModal
+                show={modalShow}
+                onHide={this.handleShowModal}
+                images={imageArray}
+              />
             </div>
           )
         }
