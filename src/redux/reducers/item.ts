@@ -10,6 +10,7 @@ export type Item = {
   description: string;
   thumbUrl: string;
   images: object;
+  time?: string;
 };
 
 export interface ItemsState {

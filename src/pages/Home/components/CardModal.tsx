@@ -20,7 +20,7 @@ class CardModal extends React.Component<any, any> {
         <Modal.Body>
           <Carousel interval={50000}>
             {this.props.images.map((image: string) => (
-              <Carousel.Item>
+              <Carousel.Item key={image}>
                 {" "}
                 <img className="d-block w-100" src={image} />{" "}
               </Carousel.Item>

@@ -39,13 +39,30 @@ class ItemViewCard extends React.Component<any, any> {
       thumbUrl,
       images
     } = this.props;
-    let item = { id, make, model, price, description, thumbUrl };
+
+    let d = new Date();
+    var hour = d.getHours();
+    var min = d.getMinutes();
+    var day = d.getDate();
+    var month = d.getMonth() + 1;
+    var year = d.getFullYear();
+
+    var timeAndDate = hour + ":" + min + " " + day + "/" + month + "/" + year;
+
+    let item = {
+      id,
+      make,
+      model,
+      price,
+      description,
+      thumbUrl,
+      time: timeAndDate
+    };
     let imageArray = [
       images.imageOneUrl,
       images.imageTwoUrl,
       images.imageThreeUrl
     ];
-    console.log(imageArray);
     return (
       <AuthUserContext.Consumer>
         {authUser =>

@@ -84,8 +84,5 @@ const mapDispatchToProps = (dispatch: Dispatch<CartItemsActions>) => ({
 export default compose(
   withFirebase,
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(CartInfo);

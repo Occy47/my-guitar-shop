@@ -55,6 +55,7 @@ class UserDetails extends React.Component<any, any> {
               model={item.model}
               price={item.price}
               description={item.description}
+              time={item.time}
             />
           ))
         ) : (
@@ -76,6 +77,7 @@ const CartDisplay: React.FC<any> = props => (
       <p>Model: {props.model}</p>
       <p>Price: {props.price}kn</p>
       <p>Description: {props.description}</p>
+      <p>Purchased on: {props.time}</p>
     </div>
   </div>
 );
@@ -84,7 +86,4 @@ const mapStateToProps = (state: RootState) => ({
   users: state.userState.users
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(UserDetails);
+export default connect(mapStateToProps, null)(UserDetails);
