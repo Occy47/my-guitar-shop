@@ -1,7 +1,7 @@
 import React from "react";
 import { withFirebase } from "../../firebase";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Nav from "react-bootstrap/Nav";
+import { Icon } from "antd";
+import "antd/dist/antd.css";
 
 import * as ROUTES from "../../constants/routes";
 
@@ -17,9 +17,10 @@ class SignOutButton extends React.Component<any, any> {
 
   render() {
     return (
-      <Nav.Link href={ROUTES.LANDING} onClick={this.handleClick}>
-        Sign Out
-      </Nav.Link>
+      <a href={ROUTES.LANDING} onClick={this.handleClick}>
+        <Icon type="poweroff" />
+        <span>Sign Out</span>
+      </a>
     );
   }
 }
