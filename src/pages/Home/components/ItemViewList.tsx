@@ -4,7 +4,7 @@ import { RootState, ItemsActions } from "../../../redux/types";
 import { connect } from "react-redux";
 import { ItemsState, Item } from "../../../redux/reducers/item";
 import ItemViewCard from "./ItemViewCard";
-import getSortedItems from "../../../redux/selectors";
+import getFilteredItems from "../../../redux/selectors";
 
 class ItemViewList extends React.Component<any, ItemsState> {
   constructor(props: any) {
@@ -35,7 +35,7 @@ class ItemViewList extends React.Component<any, ItemsState> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  items: getSortedItems(state)
+  items: getFilteredItems(state)
 });
 
 const ConnectedItemViewList = connect(mapStateToProps)(ItemViewList);

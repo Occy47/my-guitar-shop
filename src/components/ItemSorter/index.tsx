@@ -1,12 +1,11 @@
 import * as React from "react";
-import { doSetFilter } from "../../redux/actions/sort";
+import { doSetFilter } from "../../redux/actions/filter";
 import { Dispatch } from "redux";
-import { SorterActions } from "../../redux/types";
+import { FilterActions } from "../../redux/types";
 import { connect } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
-import Button from "react-bootstrap/Button";
 
 class ItemSorter extends React.Component<any, any> {
   constructor(props: any) {
@@ -55,13 +54,10 @@ class ItemSorter extends React.Component<any, any> {
   }
 }
 
-const mapDispatchtoProps = (dispatch: Dispatch<SorterActions>) => ({
+const mapDispatchtoProps = (dispatch: Dispatch<FilterActions>) => ({
   onSetFilter: (filter: string) => dispatch(doSetFilter(filter))
 });
 
-const ConnectedItemSorter = connect(
-  null,
-  mapDispatchtoProps
-)(ItemSorter);
+const ConnectedItemSorter = connect(null, mapDispatchtoProps)(ItemSorter);
 
 export default ConnectedItemSorter;

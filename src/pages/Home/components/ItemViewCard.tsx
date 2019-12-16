@@ -8,6 +8,11 @@ import { withRouter } from "react-router";
 import { compose } from "recompose";
 import * as ROUTES from "../../../constants/routes";
 
+import { Card, Layout, Button, Icon } from "antd";
+import "antd/dist/antd.css";
+
+const { Meta } = Card;
+
 interface CardProps {
   make: string;
   model: string;
@@ -67,67 +72,59 @@ class ItemViewCard extends React.Component<any, any> {
       <AuthUserContext.Consumer>
         {authUser =>
           authUser ? (
-            <div className="col-md-3">
-              <div
-                className="card text-white bg-dark mb-4"
-                style={{ width: "100%" }}
-              >
+            <Card
+              hoverable
+              style={{ width: 240, margin: "15px" }}
+              cover={
                 <img
                   src={thumbUrl}
-                  className="card-img-top"
                   alt="..."
                   onClick={this.handleShowModal}
                 ></img>
-                <div className="card-body">
-                  <h3 className="card-title">{make}</h3>
-                  <p className="card-text h5">{model}</p>
-                  <p className="card-text">{description}</p>
-                  <p>{price} kn</p>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => this.props.onAddItemToCart(item, item.id)}
-                  >
-                    Add to cart
-                  </button>
-                </div>
-              </div>
+              }
+            >
+              <Meta title={make} description={model + " - " + description} />
+              <p>{price + " kn"}</p>
+              <Button
+                type="primary"
+                icon="shopping-cart"
+                onClick={() => this.props.onAddItemToCart(item, item.id)}
+              >
+                Add to Cart
+              </Button>
               <CardModal
                 show={modalShow}
                 onHide={this.handleShowModal}
                 images={imageArray}
               />
-            </div>
+            </Card>
           ) : (
-            <div className="col-md-3">
-              <div
-                className="card text-white bg-dark mb-4"
-                style={{ width: "100%" }}
-              >
+            <Card
+              hoverable
+              style={{ width: 240, margin: "15px" }}
+              cover={
                 <img
                   src={thumbUrl}
-                  className="card-img-top"
                   alt="..."
                   onClick={this.handleShowModal}
                 ></img>
-                <div className="card-body">
-                  <h3 className="card-title">{make}</h3>
-                  <p className="card-text h5">{model}</p>
-                  <p className="card-text">{description}</p>
-                  <p>{price} kn</p>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => this.props.history.push(ROUTES.LOGIN)}
-                  >
-                    Add to cart
-                  </button>
-                </div>
-              </div>
+              }
+            >
+              <Meta title={make} description={model + " - " + description} />
+              <p>{price + " kn"}</p>
+              <Button
+                type="primary"
+                icon="shopping-cart"
+                onClick={() => this.props.history.push(ROUTES.LOGIN)}
+              >
+                Add to Cart
+              </Button>
               <CardModal
                 show={modalShow}
                 onHide={this.handleShowModal}
                 images={imageArray}
               />
-            </div>
+            </Card>
           )
         }
       </AuthUserContext.Consumer>

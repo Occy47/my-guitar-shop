@@ -2,7 +2,7 @@ import {
   ITEMS_ADD,
   ITEMS_DELETE,
   ITEMS_UPDATE,
-  SORTER_SET,
+  FILTER_SET,
   USERS_SET,
   ITEMS_SET,
   ADD_ITEM_TO_CART,
@@ -36,8 +36,8 @@ interface UpdateItemAction {
   payload: Item;
 }
 
-interface SortItemsAction {
-  type: typeof SORTER_SET;
+interface FilterItemsAction {
+  type: typeof FILTER_SET;
   payload: string;
 }
 
@@ -72,7 +72,7 @@ export type ItemsActions =
   | AddItemAction
   | DeleteItemAction
   | UpdateItemAction;
-export type SorterActions = SortItemsAction;
+export type FilterActions = FilterItemsAction;
 export type UsersActions = SetUsersAction;
 export type CartItemsActions =
   | AddItemToCartAction
