@@ -6,4 +6,5 @@
 
 .background {
   background-color: rgb(79, 79, 82);
+  min-height: 950px;
 }

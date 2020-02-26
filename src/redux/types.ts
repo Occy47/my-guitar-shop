@@ -8,7 +8,8 @@ import {
   ADD_ITEM_TO_CART,
   DELETE_ITEM_FROM_CART,
   EMPTY_CART,
-  REMOVE_ALERT
+  REMOVE_ALERT,
+  SORT_BY
 } from "./constants";
 import { Item, ItemsState } from "../redux/reducers/item";
 
@@ -38,6 +39,11 @@ interface UpdateItemAction {
 
 interface FilterItemsAction {
   type: typeof FILTER_SET;
+  payload: string;
+}
+
+interface SortItemsAction {
+  type: typeof SORT_BY;
   payload: string;
 }
 
@@ -73,6 +79,7 @@ export type ItemsActions =
   | DeleteItemAction
   | UpdateItemAction;
 export type FilterActions = FilterItemsAction;
+export type SortByActions = SortItemsAction;
 export type UsersActions = SetUsersAction;
 export type CartItemsActions =
   | AddItemToCartAction

@@ -8,6 +8,7 @@ import { FilterActions } from "../../redux/types";
 import { Dispatch } from "redux";
 import { doSetFilter } from "../../redux/actions/filter";
 import { connect } from "react-redux";
+import SortByAndPagination from "./components/SortByAndPagination";
 
 const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -83,12 +84,8 @@ class HomePage extends React.Component<any, any> {
                 minHeight: 280
               }}
             >
-              <Pagination
-                style={{ padding: "10px", background: "#fff" }}
-                size="small"
-                total={50}
-                showSizeChanger
-              />
+              <SortByAndPagination />
+
               <ConnectedItemViewList />
             </Content>
           </Layout>

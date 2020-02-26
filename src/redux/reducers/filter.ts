@@ -4,7 +4,7 @@ function applyFilter(state: string, action: any) {
   return action.payload;
 }
 
-function FilterReducer(state: string = "SHOW_ALL", action: any) {
+function filterReducer(state: string = "SHOW_ALL", action: any) {
   switch (action.type) {
     case FILTER_SET:
       return applyFilter(state, action);
@@ -13,4 +13,4 @@ function FilterReducer(state: string = "SHOW_ALL", action: any) {
   }
 }
 
-export default FilterReducer;
+export default filterReducer;

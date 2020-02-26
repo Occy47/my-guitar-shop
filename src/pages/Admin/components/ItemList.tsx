@@ -5,7 +5,7 @@ import { doDeleteItem, doUpdateItem } from "../../../redux/actions/item";
 import { ItemsState, Item } from "../../../redux/reducers/item";
 import { RootState, ItemsActions } from "../../../redux/types";
 import "bootstrap/dist/css/bootstrap.min.css";
-import getFilteredItems from "../../../redux/selectors";
+import { getFilteredItems, getSortByItems } from "../../../redux/selectors";
 import Firebase, { withFirebase } from "../../../firebase";
 import { compose } from "recompose";
 import ConnectedItemSorter from "../../../components/ItemSorter";
@@ -194,7 +194,7 @@ class ItemComponent extends React.Component<ItemProps, any> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  items: getFilteredItems(state)
+  items: getFilteredItems(state, getSortByItems)
 });
 
 const mapDispatchtoProps = (dispatch: Dispatch<ItemsActions>) => ({
