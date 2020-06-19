@@ -1,3 +1,9 @@
+﻿For testing admin features of application you can login with:
+
+user: admin@mail.com
+pass: admin123
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
