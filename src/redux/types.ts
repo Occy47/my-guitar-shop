@@ -9,7 +9,8 @@ import {
   DELETE_ITEM_FROM_CART,
   EMPTY_CART,
   REMOVE_ALERT,
-  SORT_BY
+  SORT_BY,
+  SET_PAGINATION,
 } from "./constants";
 import { Item, ItemsState } from "../redux/reducers/item";
 
@@ -72,6 +73,11 @@ interface RemoveAlert {
   payload: any;
 }
 
+interface SetPagination {
+  type: typeof SET_PAGINATION;
+  payload: any;
+}
+
 export type RootState = StateType<typeof rootReducer>;
 export type ItemsActions =
   | SetItemsAction
@@ -86,3 +92,4 @@ export type CartItemsActions =
   | DeleteItemFromCart
   | EmptyUserCart;
 export type AlertsActions = RemoveAlert;
+export type PaginationActions = SetPagination;

@@ -85,7 +85,6 @@ class HomePage extends React.Component<any, any> {
               }}
             >
               <SortByAndPagination />
-
               <ConnectedItemViewList />
             </Content>
           </Layout>

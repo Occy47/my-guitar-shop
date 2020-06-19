@@ -3,9 +3,9 @@ import { doSetFilter } from "../../redux/actions/filter";
 import { Dispatch } from "redux";
 import { FilterActions } from "../../redux/types";
 import { connect } from "react-redux";
-import "bootstrap/dist/css/bootstrap.min.css";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
+
+import { Menu, Dropdown, Button } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 
 class ItemSorter extends React.Component<any, any> {
   constructor(props: any) {
@@ -23,39 +23,33 @@ class ItemSorter extends React.Component<any, any> {
   }
 
   render() {
-    return (
-      <DropdownButton id="dropdown-item-button" title="Filter">
-        <Dropdown.Item
-          as="button"
-          onClick={() => this.handleFilter("SHOW_ALL")}
-        >
+    const menu = (
+      <Menu>
+        <Menu.Item key="1" onClick={() => this.handleFilter("SHOW_ALL")}>
           Show all
-        </Dropdown.Item>
-        <Dropdown.Item
-          as="button"
-          onClick={() => this.handleFilter("SHOW_GUITARS")}
-        >
+        </Menu.Item>
+        <Menu.Item key="2" onClick={() => this.handleFilter("SHOW_GUITARS")}>
           Guitars
-        </Dropdown.Item>
-        <Dropdown.Item
-          as="button"
-          onClick={() => this.handleFilter("SHOW_AMPS")}
-        >
+        </Menu.Item>
+        <Menu.Item key="3" onClick={() => this.handleFilter("SHOW_AMPS")}>
           Amps
-        </Dropdown.Item>
-        <Dropdown.Item
-          as="button"
-          onClick={() => this.handleFilter("SHOW_OTHER")}
-        >
-          Other
-        </Dropdown.Item>
-      </DropdownButton>
+        </Menu.Item>
+      </Menu>
+    );
+
+    return (
+      <Dropdown overlay={menu}>
+        <Button style={{ margin: 6 }} ghost>
+          Filter
+          <DownOutlined translate="" />
+        </Button>
+      </Dropdown>
     );
   }
 }
 
 const mapDispatchtoProps = (dispatch: Dispatch<FilterActions>) => ({
-  onSetFilter: (filter: string) => dispatch(doSetFilter(filter))
+  onSetFilter: (filter: string) => dispatch(doSetFilter(filter)),
 });
 
 const ConnectedItemSorter = connect(null, mapDispatchtoProps)(ItemSorter);

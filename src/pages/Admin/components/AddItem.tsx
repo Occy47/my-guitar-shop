@@ -7,8 +7,13 @@ import { ItemsActions } from "../../../redux/types";
 import uuid from "uuid";
 import Firebase, { withFirebase } from "../../../firebase";
 import { compose } from "recompose";
-import Form from "react-bootstrap/Form";
-import { Col, Button } from "react-bootstrap";
+// import Form from "react-bootstrap/Form";
+// import { Col, Button } from "react-bootstrap";
+
+import { Form, Row, Col, Button, Select, Input, Upload } from "antd";
+//import { UploadOutline, InboxOutline } from "@ant-design/icons";
+
+const { Option } = Select;
 
 export interface IState {
   id: string;
@@ -52,7 +57,7 @@ class AddItem extends React.Component<IProps, IState> {
       thumbnail: null,
       imageOne: null,
       imageTwo: null,
-      imageThree: null
+      imageThree: null,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -65,11 +70,30 @@ class AddItem extends React.Component<IProps, IState> {
     this.handleImageOneUpload = this.handleImageOneUpload.bind(this);
     this.handleImageTwoUpload = this.handleImageTwoUpload.bind(this);
     this.handleImageThreeUpload = this.handleImageThreeUpload.bind(this);
+    this.clickInput = this.clickInput.bind(this);
+    this.onSelect = this.onSelect.bind(this);
+  }
+
+  clickInput(event: any) {
+    var target = event.target.id;
+    var inputBtn = document.getElementById(`${target}Input`);
+    if (inputBtn) {
+      inputBtn.click();
+    }
+    {
+      console.log("btn is null");
+    }
   }
 
   onChange(event: any) {
     this.setState({ [event.target.name]: event.target.value } as IState);
     event.preventDefault();
+  }
+
+  onSelect(value: string) {
+    if (value) {
+      this.setState({ category: value });
+    }
   }
 
   onThumbnailChange(event: any) {
@@ -94,16 +118,19 @@ class AddItem extends React.Component<IProps, IState> {
           });
       });
     event.preventDefault();
+    console.log("thumb uploaded");
   }
 
   onImageOneChange(event: any) {
     if (event.target.files[0]) {
       const newImage = event.target.files[0];
       this.setState({ imageOne: newImage });
+    } else {
+      console.log("image one do nothing");
     }
   }
 
-  handleImageOneUpload(event: any) {
+  handleImageOneUpload() {
     const { imageOne, id } = this.state;
     this.props.firebase.storage
       .ref(`images/${id}/${imageOne.name}`)
@@ -117,6 +144,7 @@ class AddItem extends React.Component<IProps, IState> {
             this.setState({ imageOneUrl: url });
           });
       });
+    console.log("image one uploaded");
   }
 
   onImageTwoChange(event: any) {
@@ -176,8 +204,9 @@ class AddItem extends React.Component<IProps, IState> {
       thumbUrl,
       imageOneUrl,
       imageTwoUrl,
-      imageThreeUrl
+      imageThreeUrl,
     } = this.state;
+
     let newItem = {
       id,
       category,
@@ -186,7 +215,7 @@ class AddItem extends React.Component<IProps, IState> {
       price,
       description,
       thumbUrl,
-      images: { imageOneUrl, imageTwoUrl, imageThreeUrl }
+      images: { imageOneUrl, imageTwoUrl, imageThreeUrl },
     };
 
     this.props.onAddItem(newItem);
@@ -197,7 +226,7 @@ class AddItem extends React.Component<IProps, IState> {
       price,
       description,
       thumbUrl,
-      images: { imageOneUrl, imageTwoUrl, imageThreeUrl }
+      images: { imageOneUrl, imageTwoUrl, imageThreeUrl },
     });
     this.setState({
       category: "",
@@ -212,141 +241,152 @@ class AddItem extends React.Component<IProps, IState> {
       thumbnail: null,
       imageOne: null,
       imageTwo: null,
-      imageThree: null
+      imageThree: null,
     });
     event.preventDefault();
   }
 
   render() {
-    const isInvalid = this.state.thumbnail === null ? true : false;
+    const { thumbnail, imageOne, imageTwo, imageThree } = this.state;
+    const isInvalid = thumbnail === null ? true : false;
+    console.log("thumb: " + this.state.thumbnail);
+    console.log("thumb url : " + this.state.thumbUrl);
+    if (this.state.imageOne) {
+      console.log("image 1: " + this.state.imageOne.name);
+    }
+
+    console.log("image 1 url : " + this.state.imageOneUrl);
+    console.log("category: " + this.state.category);
+
     return (
       <Form
-        className="list-group-item list-group-item-success"
+        name="add item"
         onSubmit={this.onCreateItem}
+        style={{ background: "#676767", padding: 6 }}
       >
         <h5>Add item: </h5>
-        <Form.Row>
-          <Col>
-            <Form.Control as="select" name="category" onChange={this.onChange}>
-              <option value="">category</option>
-              <option value="guitars">guitars</option>
-              <option value="amps">amps</option>
-              <option value="other">other</option>
-            </Form.Control>
+        <Row>
+          <Col span={4}>
+            <Form.Item label="Category" required style={{ padding: 6 }}>
+              <Select
+                onChange={this.onSelect}
+                placeholder="Select a category"
+                allowClear
+              >
+                <Option value="guitars">guitars</Option>
+                <Option value="amps">amps</Option>
+                <Option value="other">other</Option>
+              </Select>
+            </Form.Item>
           </Col>
-          <Col>
-            <Form.Control
-              type="text"
-              name="make"
-              onChange={this.onChange}
-              placeholder="Make"
-              required
-            />
+          <Col span={4}>
+            <Form.Item label="Make" required style={{ padding: 6 }}>
+              <Input name="make" onChange={this.onChange} />
+            </Form.Item>
           </Col>
-          <Col>
-            <Form.Control
-              as="input"
-              type="text"
-              name="model"
-              onChange={this.onChange}
-              required
-              placeholder="Model"
-            />
+          <Col span={4}>
+            <Form.Item required label="Model" style={{ padding: 6 }}>
+              <Input name="model" onChange={this.onChange} />
+            </Form.Item>
           </Col>
-        </Form.Row>
-        <Form.Row>
-          <Col>
-            <Form.Control
-              type="text"
-              name="price"
-              onChange={this.onChange}
-              placeholder="Price"
-              required
-            />
+          <Col span={4}>
+            <Form.Item label="Price" required style={{ padding: 6 }}>
+              <Input name="price" onChange={this.onChange} />
+            </Form.Item>
           </Col>
-          <Col>
-            <Form.Control
-              type="text"
-              name="description"
-              onChange={this.onChange}
-              required
-              placeholder="Description"
-            />
+          <Col span={4}>
+            <Form.Item required label="Description" style={{ padding: 6 }}>
+              <Input name="description" onChange={this.onChange} />
+            </Form.Item>
           </Col>
-        </Form.Row>
-        <Form.Row>
-          <Col>
-            <Form.Control
-              name="thumbnail"
-              type="file"
-              onChange={this.onThumbnailChange}
-            />
+        </Row>
+        <Row>
+          <Col span={4}>
+            <Form.Item label="Thumbnail" style={{ padding: 6 }}>
+              <Button name="thumb" id="thumb" onClick={this.clickInput}>
+                <input
+                  style={{ display: "none" }}
+                  id="thumbInput"
+                  name="thumb"
+                  type="file"
+                  onChange={this.onThumbnailChange}
+                />
+                Select thumbnail
+              </Button>
+              <Button
+                disabled={thumbnail === null ? true : false}
+                onClick={this.handleThumbnailUpload}
+                style={{ margin: 6 }}
+              >
+                Upload
+              </Button>
+            </Form.Item>
           </Col>
-          <Col>
-            <Button
-              variant="primary"
-              disabled={isInvalid}
-              onClick={this.handleThumbnailUpload}
-            >
-              Upload thumbnail
-            </Button>
+          <Col span={4}>
+            <Form.Item label="Image 1" style={{ padding: 6 }}>
+              <Button id="imageOne" onClick={this.clickInput}>
+                <input
+                  style={{ display: "none" }}
+                  id="imageOneInput"
+                  name="imageOne"
+                  type="file"
+                  onChange={this.onImageOneChange}
+                />
+                Select image 1
+              </Button>
+              <Button
+                disabled={imageOne === null ? true : false}
+                onClick={this.handleImageOneUpload}
+                style={{ margin: 6 }}
+              >
+                Upload
+              </Button>
+            </Form.Item>
           </Col>
-        </Form.Row>
-        <Form.Row>
-          <Col>
-            <Form.Control
-              name="imageOne"
-              type="file"
-              onChange={this.onImageOneChange}
-            />
+          <Col span={4}>
+            <Form.Item label="Image 2" style={{ padding: 6 }}>
+              <Button id="imageTwo" onClick={this.clickInput}>
+                <input
+                  style={{ display: "none" }}
+                  id="imageTwoInput"
+                  name="imageTwo"
+                  type="file"
+                  onChange={this.onImageTwoChange}
+                />
+                Select image 2
+              </Button>
+              <Button
+                disabled={imageTwo === null ? true : false}
+                onClick={this.handleImageTwoUpload}
+                style={{ margin: 6 }}
+              >
+                Upload
+              </Button>
+            </Form.Item>
           </Col>
-          <Col>
-            <Button
-              variant="primary"
-              disabled={isInvalid}
-              onClick={this.handleImageOneUpload}
-            >
-              Upload image 1
-            </Button>
+          <Col span={4}>
+            <Form.Item label="Image 3" style={{ padding: 6 }}>
+              <Button id="imageThree" onClick={this.clickInput}>
+                <input
+                  style={{ display: "none" }}
+                  id="imageThreeInput"
+                  name="imageThree"
+                  type="file"
+                  onChange={this.onImageThreeChange}
+                />
+                Select image 3
+              </Button>
+              <Button
+                disabled={imageThree === null ? true : false}
+                onClick={this.handleImageThreeUpload}
+                style={{ margin: 6 }}
+              >
+                Upload
+              </Button>
+            </Form.Item>
           </Col>
-        </Form.Row>
-        <Form.Row>
-          <Col>
-            <Form.Control
-              name="imageTwo"
-              type="file"
-              onChange={this.onImageTwoChange}
-            />
-          </Col>
-          <Col>
-            <Button
-              variant="primary"
-              disabled={isInvalid}
-              onClick={this.handleImageTwoUpload}
-            >
-              Upload image 2
-            </Button>
-          </Col>
-        </Form.Row>
-        <Form.Row>
-          <Col>
-            <Form.Control
-              name="imageThree"
-              type="file"
-              onChange={this.onImageThreeChange}
-            />
-          </Col>
-          <Col>
-            <Button
-              variant="primary"
-              disabled={isInvalid}
-              onClick={this.handleImageThreeUpload}
-            >
-              Upload image 3
-            </Button>
-          </Col>
-        </Form.Row>
-        <Button variant="primary" type="submit">
+        </Row>
+        <Button type="primary" htmlType="submit" style={{ padding: 6 }}>
           Add item
         </Button>
       </Form>
@@ -355,7 +395,7 @@ class AddItem extends React.Component<IProps, IState> {
 }
 
 const mapDispatchtoProps = (dispatch: Dispatch<ItemsActions>) => ({
-  onAddItem: (item: Item) => dispatch(doAddItem(item))
+  onAddItem: (item: Item) => dispatch(doAddItem(item)),
 });
 
 export default compose(

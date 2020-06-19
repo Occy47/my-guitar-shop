@@ -5,8 +5,9 @@ import Firebase, { withFirebase } from "../../../firebase";
 import { compose, Dispatch } from "redux";
 import { doSetUsers } from "../../../redux/actions/user";
 import { connect } from "react-redux";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
+
+import { List, Button } from "antd";
 
 interface IUserProps {
   users: User[];
@@ -23,9 +24,9 @@ class UsersList extends React.Component<IUserProps, IUserState> {
     this.props.firebase.users().on("value", (snapshot: any) => {
       const usersObject = snapshot.val();
 
-      const usersList = Object.keys(usersObject).map(key => ({
+      const usersList = Object.keys(usersObject).map((key) => ({
         ...usersObject[key],
-        uid: key
+        uid: key,
       }));
       this.props.onSetUsers(usersList);
     });
@@ -40,21 +41,23 @@ class UsersList extends React.Component<IUserProps, IUserState> {
     return (
       <div>
         <h5>Users: </h5>
-        {users.map((user: any) => (
-          <UserComponent
-            key={user.uid}
-            firstname={user.firstname}
-            email={user.email}
-            id={user.uid}
-          />
-        ))}
+        <List style={{ background: "#676767", padding: 6 }}>
+          {users.map((user: any) => (
+            <UserComponent
+              key={user.uid}
+              firstname={user.firstname}
+              email={user.email}
+              id={user.uid}
+            />
+          ))}
+        </List>
       </div>
     );
   }
 }
 
-const UserComponent: React.FC<any> = props => (
-  <div className="list-group-item list-group-item-primary">
+const UserComponent: React.FC<any> = (props) => (
+  <List.Item style={{ border: "#8c8c8c solid 1px" }}>
     <span>
       <strong>First name: </strong>
       {props.firstname}{" "}
@@ -65,26 +68,23 @@ const UserComponent: React.FC<any> = props => (
     </span>
     <span>
       <Link to={`/admin/user/${props.id}`}>
-        <button type="button" className="btn btn-primary">
+        <Button type="primary" style={{ margin: 6 }}>
           Details
-        </button>
+        </Button>
       </Link>
     </span>
-  </div>
+  </List.Item>
 );
 
 const mapStateToProps = (state: RootState) => ({
-  users: state.userState.users
+  users: state.userState.users,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<UsersActions>) => ({
-  onSetUsers: (users: User[]) => dispatch(doSetUsers(users))
+  onSetUsers: (users: User[]) => dispatch(doSetUsers(users)),
 });
 
 export default compose(
   withFirebase,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(UsersList) as any;

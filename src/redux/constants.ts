@@ -12,3 +12,4 @@ export const DELETE_ITEM_FROM_CART = "DELETE_ITEM_FROM_CART";
 export const EMPTY_CART = "EMPTY_CART";
 export const REMOVE_ALERT = "REMOVE_ALERT";
 export const SORT_BY = "SORT_BY";
+export const SET_PAGINATION = "SET_PAGINATION";

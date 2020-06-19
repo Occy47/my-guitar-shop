@@ -5,6 +5,7 @@ import userReducer from "./user";
 import cartReducer from "./cart";
 import alertsReducer from "./alerts";
 import sortReducer from "./sort";
+import paginationReducer from "./pagination";
 
 const rootReducer = combineReducers({
   itemsState: itemsReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   userState: userReducer,
   cartState: cartReducer,
   alertsState: alertsReducer,
-  sortState: sortReducer
+  sortState: sortReducer,
+  paginationState: paginationReducer,
 });
 
 export default rootReducer;

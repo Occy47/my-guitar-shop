@@ -1,45 +1,52 @@
 import * as React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { RootState, ItemsActions } from "../../../redux/types";
+import { RootState } from "../../../redux/types";
 import { connect } from "react-redux";
 import { ItemsState, Item } from "../../../redux/reducers/item";
 import ItemViewCard from "./ItemViewCard";
-import { getFilteredItems, getSortByItems } from "../../../redux/selectors";
+import { getPaginatedSortedAndFilteredItems } from "../../../redux/selectors";
 
-class ItemViewList extends React.Component<any, ItemsState> {
+import { Spin } from "antd";
+
+class ItemViewList extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
+    this.state = {
+      isLoading: false,
+    };
   }
 
   render() {
     const { items } = this.props;
+    const { isLoading } = this.state;
+    console.log("items: " + isLoading);
     return (
       <div className="container">
-        <div className="row">
-          {items.map((item: Item) => (
-            <ItemViewCard
-              key={item.id}
-              id={item.id}
-              make={item.make}
-              model={item.model}
-              price={item.price}
-              description={item.description}
-              thumbUrl={item.thumbUrl}
-              images={item.images}
-            />
-          ))}
-        </div>
+        {!isLoading ? (
+          <div className="row">
+            {items.map((item: Item) => (
+              <ItemViewCard
+                key={item.id}
+                id={item.id}
+                make={item.make}
+                model={item.model}
+                price={item.price}
+                description={item.description}
+                thumbUrl={item.thumbUrl}
+                images={item.images}
+              />
+            ))}
+          </div>
+        ) : (
+          <Spin size="large" />
+        )}
       </div>
     );
   }
 }
 
-// const mapStateToProps = (state: RootState) => ({
-//   items: getFilteredItems(state, getSortByItems)
-// });
-
 const mapStateToProps = (state: RootState) => ({
-  items: getSortByItems(state)
+  items: getPaginatedSortedAndFilteredItems(state),
 });
 
 const ConnectedItemViewList = connect(mapStateToProps)(ItemViewList);

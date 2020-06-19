@@ -3,7 +3,7 @@ import CartInfo from "./components/CartInfo";
 
 const CartPage = () => (
   <div>
-    My Cart
+    <h3>My Cart</h3>
     <hr />
     <CartInfo />
   </div>

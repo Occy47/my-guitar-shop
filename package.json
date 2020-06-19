@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.1.0",
     "@types/bootstrap": "^4.3.1",
     "@types/firebase": "^3.2.1",
     "@types/jest": "24.0.11",
@@ -16,7 +17,7 @@
     "@types/redux-logger": "^3.0.7",
     "@types/redux-thunk": "^2.1.0",
     "@types/uuid": "^3.4.5",
-    "antd": "^3.26.2",
+    "antd": "^3.26.17",
     "bootstrap": "^4.3.1",
     "firebase": "^5.11.1",
     "react": "^16.9.0",

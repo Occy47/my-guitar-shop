@@ -4,29 +4,33 @@ import { Dispatch } from "redux";
 import { doDeleteItem, doUpdateItem } from "../../../redux/actions/item";
 import { ItemsState, Item } from "../../../redux/reducers/item";
 import { RootState, ItemsActions } from "../../../redux/types";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { getFilteredItems, getSortByItems } from "../../../redux/selectors";
+import { getSortedAndFilteredItems } from "../../../redux/selectors";
 import Firebase, { withFirebase } from "../../../firebase";
 import { compose } from "recompose";
 import ConnectedItemSorter from "../../../components/ItemSorter";
 
-const ItemList: React.FC<ItemsState> = props => {
+import { List, Select, Button, Input } from "antd";
+const { Option } = Select;
+
+const ItemList: React.FC<ItemsState> = (props) => {
   const { items } = props;
   return (
     <div>
       <h5>Items: </h5>
       <ConnectedItemSorter />
-      {items.map(item => (
-        <ConnectedItemComponent
-          key={item.id}
-          id={item.id}
-          category={item.category}
-          make={item.make}
-          model={item.model}
-          price={item.price}
-          description={item.description}
-        />
-      ))}
+      <List style={{ background: "#676767", padding: 6 }}>
+        {items.map((item) => (
+          <ConnectedItemComponent
+            key={item.id}
+            id={item.id}
+            category={item.category}
+            make={item.make}
+            model={item.model}
+            price={item.price}
+            description={item.description}
+          />
+        ))}
+      </List>
     </div>
   );
 };
@@ -53,11 +57,12 @@ class ItemComponent extends React.Component<ItemProps, any> {
       make: "",
       model: "",
       price: 0,
-      description: ""
+      description: "",
     };
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleStartEditClick = this.handleStartEditClick.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onSelect = this.onSelect.bind(this);
     this.handleFinishEditClick = this.handleFinishEditClick.bind(this);
   }
 
@@ -79,7 +84,7 @@ class ItemComponent extends React.Component<ItemProps, any> {
       make: make,
       model: model,
       price: price,
-      description: description
+      description: description,
     });
     event.preventDefault();
   }
@@ -101,55 +106,63 @@ class ItemComponent extends React.Component<ItemProps, any> {
     event.preventDefault();
   }
 
+  onSelect(value: string) {
+    this.setState({ category: value });
+  }
+
   render() {
     return (
       <div>
         {this.state.isEditing ? (
-          <form className="list-group-item list-group-item-primary">
-            <select
-              name="category"
-              value={this.state.category}
-              onChange={this.onChange}
+          <List.Item style={{ border: "#8c8c8c solid 1px" }}>
+            <Select
+              placeholder="Select a category"
+              onChange={this.onSelect}
+              style={{ width: 180, margin: 2 }}
             >
-              <option value="">none</option>
-              <option value="guitars">guitars</option>
-              <option value="amps">amps</option>
-              <option value="other">other</option>
-            </select>
-            <input
+              <Option value="">none</Option>
+              <Option value="guitars">guitars</Option>
+              <Option value="amps">amps</Option>
+              <Option value="other">other</Option>
+            </Select>
+            <Input
               type="text"
               name="make"
               value={this.state.make}
               onChange={this.onChange}
+              style={{ width: 200 }}
             />
-            <input
+            <Input
               type="text"
               name="model"
               value={this.state.model}
               onChange={this.onChange}
+              style={{ width: 200 }}
             />
-            <input
+            <Input
               type="number"
               name="price"
               value={this.state.price}
               onChange={this.onChange}
+              style={{ width: 200 }}
             />
-            <input
+            <Input
               type="text"
               name="description"
               value={this.state.description}
               onChange={this.onChange}
+              style={{ width: 200 }}
             />
-            <button
-              type="button"
-              className="btn btn-success ml-1"
+            <Button
+              type="primary"
               onClick={this.handleFinishEditClick}
+              style={{ margin: 6 }}
             >
               Save
-            </button>
-          </form>
+            </Button>
+          </List.Item>
         ) : (
-          <div className="list-group-item list-group-item-primary">
+          <List.Item style={{ border: "#8c8c8c solid 1px" }}>
             <span>
               <strong>Category: </strong> {this.props.category}{" "}
             </span>
@@ -169,24 +182,22 @@ class ItemComponent extends React.Component<ItemProps, any> {
               {this.props.description}{" "}
             </span>
             <span>
-              <button
-                type="button"
-                className="btn btn-info"
+              <Button
+                type="primary"
                 onClick={this.handleStartEditClick}
+                style={{ margin: 3 }}
               >
                 Edit
-              </button>
-            </span>
-            <span>
-              <button
-                type="button"
-                className="btn btn-danger ml-1"
+              </Button>
+              <Button
+                type="danger"
                 onClick={this.handleDeleteClick}
+                style={{ margin: 6 }}
               >
                 Delete
-              </button>
+              </Button>
             </span>
-          </div>
+          </List.Item>
         )}
       </div>
     );
@@ -194,12 +205,12 @@ class ItemComponent extends React.Component<ItemProps, any> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  items: getFilteredItems(state, getSortByItems)
+  items: getSortedAndFilteredItems(state),
 });
 
 const mapDispatchtoProps = (dispatch: Dispatch<ItemsActions>) => ({
   onDeleteItem: (item: Item) => dispatch(doDeleteItem(item)),
-  onUpdateItem: (item: Item) => dispatch(doUpdateItem(item))
+  onUpdateItem: (item: Item) => dispatch(doUpdateItem(item)),
 });
 
 const ConnectedItemsList = connect(mapStateToProps)(ItemList);

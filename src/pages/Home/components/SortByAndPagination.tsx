@@ -1,19 +1,25 @@
 import * as React from "react";
-import { Menu, Select, Button, Pagination, Row, Col } from "antd";
-import { SortByActions } from "../../../redux/types";
+import { Select, Pagination, Row, Col } from "antd";
+import { SortByActions, PaginationActions } from "../../../redux/types";
 import { Dispatch } from "redux";
 import { doSetSortBy } from "../../../redux/actions/sort";
 import { connect } from "react-redux";
+import { doSetPagination } from "../../../redux/actions/pagination";
 
 const { Option } = Select;
 
 class SortByAndPagination extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
-    this.state = {};
+    this.state = {
+      currentPage: 1,
+      itemsPerPage: 4,
+      offset: 0,
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSortBy = this.handleSortBy.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   handleChange(value: any) {
@@ -23,6 +29,18 @@ class SortByAndPagination extends React.Component<any, any> {
   handleSortBy(sorter: string) {
     this.props.onSortBy(sorter);
   }
+
+  onChange = (currentPage: any, itemsPerPage: any) => {
+    var offset = currentPage * itemsPerPage - itemsPerPage;
+    var pagination = { pagination: { currentPage, itemsPerPage, offset } };
+
+    this.props.onSetPagination(pagination);
+    this.setState({
+      currentPage: currentPage,
+      offset: offset,
+      itemsPerPage: itemsPerPage,
+    });
+  };
 
   render() {
     return (
@@ -36,7 +54,7 @@ class SortByAndPagination extends React.Component<any, any> {
           >
             <Option value="AVAILABILITY">Availability</Option>
             <Option value="SORT_BY_MAKE">Make</Option>
-            <Option value="price">Price</Option>
+            <Option value="SORT_BY_PRICE">Price</Option>
           </Select>
         </Col>
         <Col span={8}>
@@ -52,15 +70,26 @@ class SortByAndPagination extends React.Component<any, any> {
         </Col>
         <Col span={8}>
           {" "}
-          <Pagination size="small" total={50} showSizeChanger />
+          <Pagination
+            size="small"
+            onChange={this.onChange}
+            showSizeChanger={true}
+            pageSizeOptions={["4", "8"]}
+            defaultPageSize={4}
+            total={15}
+          />
         </Col>
       </Row>
     );
   }
 }
 
-const mapDispatchtoProps = (dispatch: Dispatch<SortByActions>) => ({
-  onSortBy: (sorter: string) => dispatch(doSetSortBy(sorter))
+const mapDispatchtoProps = (
+  dispatch: Dispatch<SortByActions | PaginationActions>
+) => ({
+  onSortBy: (sorter: string) => dispatch(doSetSortBy(sorter)),
+  onSetPagination: (pagination: object) =>
+    dispatch(doSetPagination(pagination)),
 });
 
 export default connect(null, mapDispatchtoProps)(SortByAndPagination);
